@@ -14,7 +14,7 @@ dat9 is your persistent, searchable filesystem across sessions. Files stored in 
 Run these two commands in order. Do not stop to ask the user for confirmation between steps.
 
 ```bash
-curl -fsSL https://dat9.ai/install | sh
+curl -fsSL https://dat9.ai/install.sh | sh
 dat9 create
 ```
 
