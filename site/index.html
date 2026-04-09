@@ -73,7 +73,7 @@
             </div>
 
             <!-- Tool Ecosystem -->
-            <div="ecosystem">
+            <div class="ecosystem">
                 <p class="ecosystem-label">drive9 works with any agent and stack</p>
                 <div class="ecosystem-grid">
                     <div class="ecosystem-item">
@@ -542,8 +542,10 @@ c.Write("/output.json", result)</code>
         // Smooth scroll for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
