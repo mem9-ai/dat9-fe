@@ -25,6 +25,7 @@
                 <a href="#features">Features</a>
                 <a href="#cli">CLI</a>
                 <a href="#sdk">SDK</a>
+                <a href="#security">Security</a>
                 <button type="button" class="nav-contact" onclick="openContactModal(event)">Contact</button>
                 <a href="https://github.com/mem9-ai/drive9" target="_blank" class="nav-github">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -418,6 +419,66 @@ c.Write("/output.json", result)</code>
         log.Fatal(err)
     }
 }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security-section" id="security">
+        <div class="container">
+            <span class="security-label">Security</span>
+            <h2 class="section-title">Security &amp; Privacy</h2>
+            <p class="section-subtitle security-intro">
+                drive9 is designed to deliver persistent cloud storage with clear operational boundaries and a solid security foundation.
+            </p>
+
+            <div class="security-grid">
+                <!-- How drive9 handles data -->
+                <div class="security-card security-card-wide">
+                    <h3>How drive9 handles data</h3>
+                    <p>drive9 stores file data and metadata to help AI agents persist context across sessions, devices, and workflows. Data flows are scoped to the product's core purpose — store, retrieve, index, and serve files — with clear processing boundaries around access and operations.</p>
+                </div>
+
+                <!-- Core Security -->
+                <div class="security-card">
+                    <h3>Core security protections</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-icon">🔒</div>
+                            <div>
+                                <h4>Encryption in transit &amp; at rest</h4>
+                                <p>Data is protected both during transmission and while stored at rest.</p>
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-icon">🛡️</div>
+                            <div>
+                                <h4>Access control</h4>
+                                <p>Production system and data access are controlled and restricted.</p>
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-icon">📋</div>
+                            <div>
+                                <h4>Auditability &amp; operational visibility</h4>
+                                <p>Key operations have visibility for tracking and review.</p>
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-icon">🧱</div>
+                            <div>
+                                <h4>Isolated data processing boundaries</h4>
+                                <p>Data processing is designed around clear service boundaries to minimize unnecessary exposure.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Infrastructure -->
+                <div class="security-card">
+                    <h3>Production-grade cloud infrastructure</h3>
+                    <p>The underlying infrastructure is built for reliability, durability, and stable operations. drive9 benefits from mature security practices, controls, and operational standards behind the scenes.</p>
                 </div>
             </div>
         </div>
