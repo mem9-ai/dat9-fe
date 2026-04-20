@@ -250,6 +250,40 @@ body {
     color: var(--text-primary);
 }
 
+.hero-powered {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 40px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-primary);
+    border-radius: 100px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.hero-powered:hover {
+    border-color: var(--accent-gray);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+}
+
+.hero-powered-logo {
+    display: block;
+    flex-shrink: 0;
+    height: 22px;
+    width: auto;
+}
+
+.hero-powered-text {
+    color: inherit;
+}
+
 /* CLI Box */
 .cli-box {
     background: var(--bg-code);
@@ -477,10 +511,40 @@ body {
     margin-bottom: 56px;
 }
 
+.use-cases .section-subtitle {
+    margin-bottom: 10px;
+}
+
+.section-inline-link {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0 auto 56px;
+    max-width: 720px;
+    line-height: 1.7;
+}
+
+.section-inline-link a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.section-inline-link a:hover {
+    color: var(--text-primary);
+}
+
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: 24px;
+    align-items: stretch;
+}
+
+@media (min-width: 1200px) {
+    .features-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 }
 
 .feature-card {
@@ -517,6 +581,52 @@ body {
 .feature-card:hover {
     border-color: var(--accent-gray);
     transform: translateY(-2px);
+}
+
+a.feature-card {
+    text-decoration: none;
+}
+
+.feature-card-subtle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 0;
+    height: auto;
+    align-self: start;
+    padding: 32px 36px;
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--border-secondary);
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+/* 两列布局：最后一张单独成行时占满宽度，高度随文案 */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .feature-card-subtle {
+        grid-column: 1 / -1;
+    }
+}
+
+/* 三列布局：与同行 SDK 卡片等高 */
+@media (min-width: 1200px) {
+    .feature-card-subtle {
+        height: 100%;
+        align-self: stretch;
+    }
+}
+
+.feature-card-subtle::before {
+    opacity: 0 !important;
+}
+
+.feature-card-subtle:hover {
+    border-color: var(--border-primary);
+    background: rgba(255, 255, 255, 0.035);
+    transform: translateY(-1px);
+    color: var(--text-primary);
 }
 
 .feature-icon {
