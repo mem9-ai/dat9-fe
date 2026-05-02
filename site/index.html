@@ -14,9 +14,9 @@
             <span class="brand-name">drive9</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
-            <a href="#use">How agents use it</a>
-            <a href="#built-on-top">Built on top</a>
             <a href="#install">Install</a>
+            <a href="#use-case">Core use case</a>
+            <a href="#built-on-top">Built on top</a>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
     </header>
@@ -36,43 +36,41 @@
                 </div>
             </div>
 
-            <div class="terminal-card" aria-label="drive9 mount example">
+            <div class="terminal-card" aria-label="Shared agent workspace">
                 <div class="terminal-bar">
                     <span></span><span></span><span></span>
                 </div>
-                <pre><code>$ drive9 mount :/skills ~/drive9-skills
+                <pre><code>~/drive9-skills/
+├── review-checklist.md
+├── deploy-runbook.md
+└── artifacts/
 
-# Claude Code writes here.
-# Codex reads the same path.</code></pre>
-                <p>Now every agent uses <code>~/drive9-skills</code> like a normal folder.</p>
+Claude Code writes.
+Codex reads the same path.</code></pre>
+                <p>The product is the shared filesystem. Everything else is built on that.</p>
             </div>
         </section>
 
-        <section class="section compact" id="use">
+        <section class="section compact install" id="install">
             <div class="section-heading">
-                <p class="eyebrow">How agents use it</p>
-                <h2>It is a shared folder, not another integration.</h2>
+                <p class="eyebrow">Get started</p>
+                <h2>Mount the first workspace.</h2>
             </div>
-            <div class="steps">
-                <article>
-                    <span class="step-number">01</span>
-                    <h3>Mount a workspace</h3>
-                    <p>Expose a remote namespace at a local path your agent already knows how to use.</p>
-                </article>
-                <article>
-                    <span class="step-number">02</span>
-                    <h3>Read and write files</h3>
-                    <p>Agents use normal filesystem operations: <code>ls</code>, <code>cat</code>, <code>cp</code>, editors, and tools.</p>
-                </article>
-                <article>
-                    <span class="step-number">03</span>
-                    <h3>Hand off work</h3>
-                    <p>One agent writes to the workspace. Another reads from the same namespace on next read.</p>
-                </article>
+            <div class="install-card">
+                <pre><code>$ curl -fsSL https://drive9.ai/install.sh | sh
+$ drive9 create
+$ drive9 fs mkdir :/skills
+$ mkdir -p ~/drive9-skills
+$ drive9 mount :/skills ~/drive9-skills</code></pre>
+                <div class="install-links">
+                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+                    <a href="https://drive9.ai/skill.md">skill.md</a>
+                    <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+                </div>
             </div>
         </section>
 
-        <section class="section scenario">
+        <section class="section scenario" id="use-case">
             <div class="section-heading narrow">
                 <p class="eyebrow">Core use case</p>
                 <h2>Claude Code writes. Codex reads. No sync glue.</h2>
@@ -109,25 +107,6 @@
                     <h3>Searchable asset library</h3>
                     <p>Use the same filesystem as storage substrate; add search over supported files when the product needs it.</p>
                 </article>
-            </div>
-        </section>
-
-        <section class="section install" id="install">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Get started</p>
-                <h2>Mount the first workspace.</h2>
-            </div>
-            <div class="install-card">
-                <pre><code>$ curl -fsSL https://drive9.ai/install.sh | sh
-$ drive9 create
-$ drive9 fs mkdir :/skills
-$ mkdir -p ~/drive9-skills
-$ drive9 mount :/skills ~/drive9-skills</code></pre>
-                <div class="install-links">
-                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
-                    <a href="https://drive9.ai/skill.md">skill.md</a>
-                    <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
-                </div>
             </div>
         </section>
 
