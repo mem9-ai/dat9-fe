@@ -28,8 +28,8 @@
                 <p class="eyebrow">Filesystem skill for AI agents</p>
                 <h1>Give agents a filesystem skill.</h1>
                 <p class="hero-subtitle">
-                    Agents read <code>skill.md</code>. The skill gives them commands and paths for
-                    a shared workspace: store files, search files, and hand off artifacts.
+                    Agents read <code>skill.md</code>. The skill gives them a shared workspace:
+                    where files live, when to persist them, and how to hand off artifacts.
                 </p>
                 <div class="hero-actions">
                     <a href="#skill" class="button primary">See the agent skill</a>
@@ -37,20 +37,20 @@
                 </div>
             </div>
 
-            <div class="terminal-card" aria-label="drive9 skill excerpt">
+            <div class="terminal-card skill-card" aria-label="drive9 skill excerpt">
                 <div class="terminal-bar">
                     <span></span><span></span><span></span>
                 </div>
                 <pre><code># drive9 skill excerpt
-Remote paths start with :/
+You have a persistent workspace.
 
-- list:   drive9 fs ls :/
-- read:   drive9 fs cat :/path
-- write:  drive9 fs cp ./file :/path
-- search: drive9 fs grep "query" /
+Use it when:
+- files must survive this session
+- another agent needs your artifacts
+- the user asks to find saved work
 
-Use drive9 when files must survive the current session.</code></pre>
-                <p>For agents, drive9 is a skill contract: what commands exist and when to use them.</p>
+The workspace is addressed with shared paths.</code></pre>
+                <p>For agents, drive9 starts as a skill file, not a setup screen.</p>
             </div>
         </section>
 
@@ -59,19 +59,19 @@ Use drive9 when files must survive the current session.</code></pre>
                 <p class="eyebrow">Agent interface</p>
                 <h2>The skill is the agent-facing interface.</h2>
                 <p>
-                    Agents read the skill once and know which file operations exist, which commands to run, and when drive9 is the right storage layer.
+                    Agents read the skill once and know when to use drive9, where shared files live, and how to pass artifacts to the next agent.
                 </p>
             </div>
             <div class="steps">
                 <article>
                     <span class="step-number">01</span>
                     <h3>Read the skill</h3>
-                    <p>The agent learns the drive9 contract: commands, paths, and when to persist files.</p>
+                    <p>The agent learns the drive9 contract: workspace paths, persistence rules, and handoff behavior.</p>
                 </article>
                 <article>
                     <span class="step-number">02</span>
-                    <h3>Use the commands</h3>
-                    <p>The skill includes CLI commands such as <code>fs cp</code>, <code>fs cat</code>, <code>fs ls</code>, and <code>fs grep</code>.</p>
+                    <h3>Use the workspace</h3>
+                    <p>The agent stores files, reads prior work, and searches saved content through the skill instructions.</p>
                 </article>
                 <article>
                     <span class="step-number">03</span>
