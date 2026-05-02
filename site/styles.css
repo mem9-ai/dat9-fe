@@ -1,30 +1,28 @@
 :root {
     color-scheme: light;
     --bg: #f7f4ed;
-    --ink: #161616;
-    --muted: #6f6a62;
-    --line: #ded7ca;
+    --ink: #151515;
+    --muted: #746f68;
+    --line: #ddd5c7;
     --paper: #fffdf8;
     --soft: #ede7dc;
 }
 
 * { box-sizing: border-box; }
-
 html, body { min-height: 100%; }
 
 body {
     margin: 0;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 a { color: inherit; text-decoration: none; }
-
 code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
 
 .page {
-    width: min(1120px, calc(100% - 48px));
+    width: min(1040px, calc(100% - 48px));
     min-height: 100vh;
     margin: 0 auto;
     display: flex;
@@ -41,11 +39,10 @@ code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
 
 .hero {
     flex: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(340px, 460px);
-    gap: 72px;
-    align-items: center;
-    padding: 48px 0 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 0 78px;
 }
 
 .eyebrow {
@@ -58,66 +55,35 @@ code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
 }
 
 h1 {
-    max-width: 760px;
-    margin: 0 0 28px;
-    font-size: clamp(58px, 8vw, 118px);
+    max-width: 860px;
+    margin: 0 0 30px;
+    font-size: clamp(56px, 8vw, 112px);
     line-height: 0.9;
     letter-spacing: -0.08em;
 }
 
-.subcopy {
-    max-width: 660px;
-    margin: 0;
-    color: var(--muted);
-    font-size: clamp(19px, 2vw, 25px);
-    line-height: 1.45;
+.instruction {
+    max-width: 980px;
+    margin-bottom: 28px;
+    padding: 26px 28px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(40, 32, 20, 0.10);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: clamp(17px, 2vw, 22px);
+    line-height: 1.55;
     letter-spacing: -0.035em;
 }
 
-.subcopy code {
-    color: var(--ink);
-    font-size: 0.92em;
-}
-
-.skill-paper {
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    background: var(--paper);
-    box-shadow: 0 24px 70px rgba(40, 32, 20, 0.12);
-}
-
-.paper-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 22px;
-    border-bottom: 1px solid var(--line);
+.subcopy {
+    max-width: 760px;
+    margin: 0;
     color: var(--muted);
-    font-size: 13px;
+    font-size: clamp(18px, 1.8vw, 23px);
+    line-height: 1.5;
+    letter-spacing: -0.03em;
 }
-
-.paper-head span:first-child {
-    color: var(--ink);
-    font-weight: 760;
-}
-
-.paper-body {
-    padding: 30px;
-    color: #2a2824;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    font-size: 14px;
-    line-height: 1.75;
-}
-
-.paper-body p { margin: 0 0 16px; }
-
-.paper-body ul {
-    margin: 0 0 18px;
-    padding-left: 20px;
-}
-
-.paper-title { font-weight: 760; }
 
 .setup {
     display: flex;
@@ -129,7 +95,7 @@ h1 {
     font-size: 14px;
 }
 
-.setup p { margin: 0; font-weight: 700; color: var(--ink); }
+.setup p { margin: 0; color: var(--ink); font-weight: 700; }
 
 .setup code {
     padding: 9px 11px;
@@ -144,25 +110,18 @@ h1 {
 
 footer {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     padding: 22px 0 34px;
     border-top: 1px solid var(--line);
-    color: var(--muted);
+    color: var(--ink);
     font-size: 13px;
 }
 
-footer a { color: var(--ink); }
-
-@media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; gap: 40px; }
+@media (max-width: 720px) {
+    .page { width: min(100% - 32px, 1040px); }
+    .hero { padding: 42px 0 58px; }
+    h1 { font-size: 56px; }
+    .instruction { padding: 20px; }
     .setup { align-items: flex-start; flex-direction: column; }
     .setup a { margin-left: 0; }
-    footer { flex-direction: column; }
-}
-
-@media (max-width: 560px) {
-    .page { width: min(100% - 32px, 1120px); }
-    h1 { font-size: 58px; }
-    .paper-body { padding: 22px; font-size: 13px; }
 }

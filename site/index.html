@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drive9 — filesystem skill for AI agents</title>
-    <meta name="description" content="drive9 gives AI agents a filesystem skill: persistent files, shared paths, and handoff across sessions.">
+    <meta name="description" content="Tell your agent to read the drive9 skill and follow the instructions to install and configure drive9.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,44 +14,25 @@
         </header>
 
         <section class="hero" aria-labelledby="hero-title">
-            <div class="hero-copy">
-                <p class="eyebrow">For AI agents</p>
-                <h1 id="hero-title">Give agents a filesystem skill.</h1>
-                <p class="subcopy">
-                    Agents read <code>skill.md</code>. Humans set up the workspace once.
-                    Files survive sessions and move between agents through shared paths.
-                </p>
+            <p class="eyebrow">For AI agents</p>
+            <h1 id="hero-title">Give your agent one instruction.</h1>
+            <div class="instruction" aria-label="Agent instruction">
+                <span>Read https://drive9.ai/skill.md and follow the instructions.</span>
             </div>
-
-            <article class="skill-paper" aria-label="drive9 skill excerpt">
-                <div class="paper-head">
-                    <span>skill.md</span>
-                    <span>agent contract</span>
-                </div>
-                <div class="paper-body">
-                    <p class="paper-title"># drive9</p>
-                    <p>You have a persistent workspace.</p>
-                    <ul>
-                        <li>Use it when files must survive this session.</li>
-                        <li>Use it when another agent needs your artifacts.</li>
-                        <li>Use it when the user asks to find saved work.</li>
-                    </ul>
-                    <p>Use shared paths. Do not invent another storage layer.</p>
-                </div>
-            </article>
+            <p class="subcopy">
+                drive9 is a persistent filesystem skill for AI agents. Setup stays small; the agent follows the skill.
+            </p>
         </section>
 
         <section class="setup" aria-label="Human setup">
-            <p>Setup once</p>
+            <p>Human setup</p>
             <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
-            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Read the docs</a>
+            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
         </section>
 
         <footer>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
             <a href="https://drive9.ai/skill.md">skill.md</a>
-            <span>Search and semantic workflows are built on top.</span>
         </footer>
     </main>
 </body>
