@@ -16,7 +16,7 @@
         <section class="hero" aria-labelledby="hero-title">
             <p class="eyebrow">For your agent</p>
             <h1 id="hero-title">Give your agent one instruction.</h1>
-            <div class="instruction" aria-label="Agent instruction" onclick="navigator.clipboard.writeText(this.textContent.trim()).then(()=>{this.dataset.copied='true';setTimeout(()=>delete this.dataset.copied,1500)})">
+            <div class="instruction" aria-label="Copy agent instruction" role="button" tabindex="0" data-copy-text="Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.">
                 <span>Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.</span>
             </div>
         </section>
@@ -48,5 +48,64 @@
             <a href="https://drive9.ai/skill.md">skill.md</a>
         </footer>
     </main>
+    <script>
+        (() => {
+            const instruction = document.querySelector('.instruction');
+            if (!instruction) return;
+
+            const originalLabel = instruction.getAttribute('aria-label') || 'Copy agent instruction';
+            const copiedLabel = 'Agent instruction copied';
+            const text = instruction.dataset.copyText || instruction.textContent.trim();
+            let resetTimer;
+
+            const setCopiedState = () => {
+                instruction.dataset.copied = 'true';
+                instruction.setAttribute('aria-label', copiedLabel);
+                window.clearTimeout(resetTimer);
+                resetTimer = window.setTimeout(() => {
+                    delete instruction.dataset.copied;
+                    instruction.setAttribute('aria-label', originalLabel);
+                }, 1500);
+            };
+
+            const fallbackCopy = (value) => {
+                const input = document.createElement('textarea');
+                input.value = value;
+                input.setAttribute('readonly', '');
+                input.style.position = 'fixed';
+                input.style.opacity = '0';
+                input.style.pointerEvents = 'none';
+                document.body.appendChild(input);
+                input.select();
+                input.setSelectionRange(0, input.value.length);
+                const copied = document.execCommand('copy');
+                document.body.removeChild(input);
+                return copied;
+            };
+
+            const copyInstruction = async () => {
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                    } else if (!fallbackCopy(text)) {
+                        return;
+                    }
+                    setCopiedState();
+                } catch (_error) {
+                    if (fallbackCopy(text)) {
+                        setCopiedState();
+                    }
+                }
+            };
+
+            instruction.addEventListener('click', copyInstruction);
+            instruction.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    copyInstruction();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
