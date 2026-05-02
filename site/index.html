@@ -3,405 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>drive9 — Shared filesystem for AI agents</title>
-    <meta name="description" content="Give every agent the same workspace. Mount a shared remote filesystem so Claude Code, Codex, and your own agents can read, write, and share the same files.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>drive9 — filesystem for AI agents</title>
+    <meta name="description" content="drive9 gives AI agents one shared remote filesystem. Mount it once, then agents read, write, and hand off files through normal paths.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Background Grid -->
-    <div class="bg-grid"></div>
+    <header class="site-header">
+        <a href="#" class="brand" aria-label="drive9 home">
+            <span class="brand-mark">d9</span>
+            <span class="brand-name">drive9</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+            <a href="#use">How agents use it</a>
+            <a href="#built-on-top">Built on top</a>
+            <a href="#install">Install</a>
+            <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+        </nav>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <span class="logo-icon">&#9670;</span>
-                <span class="logo-text">drive9</span>
-            </a>
-            <div class="nav-links">
-                <a href="#for-agents">For Agents</a>
-                <a href="#built-on-top">Built on Top</a>
-                <a href="#getting-started">Get Started</a>
-                <a href="#faq">FAQ</a>
-                <a href="https://github.com/mem9-ai/drive9" target="_blank" class="nav-github">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ============================================
-         HERO — Agent-only
-         ============================================ -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-eyebrow">Shared filesystem for AI agents</div>
-            <h1 class="hero-title">
-                Give every agent<br>
-                <span class="gradient-text">the same workspace.</span>
-            </h1>
-            <p class="hero-subtitle">
-                Mount one remote filesystem into Claude Code, Codex, and your own agents.
-                They read, write, and share files through the same namespace.
-            </p>
-            <div class="hero-ctas">
-                <a href="#getting-started" class="cta-button primary">Get Started</a>
-                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" class="cta-button secondary">Read Docs</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         AGENT PROBLEM
-         ============================================ -->
-    <section class="problem-section">
-        <div class="container">
-            <h2 class="section-title">Sound familiar?</h2>
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <h3>Files are scattered.</h3>
-                    <p>Every agent writes to its own local directory. Other agents can't see the output.</p>
-                </div>
-                <div class="problem-card">
-                    <h3>Sharing is fragile.</h3>
-                    <p>Syncing files between Claude Code, Codex, and custom agents means custom glue, environment variables, and manual copy.</p>
-                </div>
-                <div class="problem-card">
-                    <h3>Working state is lost.</h3>
-                    <p>Skills, artifacts, and context disappear between sessions. Each run starts from scratch.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         FOR AGENTS — Core product
-         ============================================ -->
-    <section class="for-agents-section" id="for-agents">
-        <div class="container">
-            <div class="section-label-bar">
-                <span class="section-label-badge">Core Product</span>
-            </div>
-            <h2 class="section-title">For your agents</h2>
-            <p class="section-subtitle">Mount a shared remote workspace. Agents read, write, and share files through one namespace.</p>
-
-            <!-- Agent scenario -->
-            <div class="scenario-card scenario-featured">
-                <div class="scenario-header">
-                    <h3>Shared Agent Workspace</h3>
-                </div>
-                <div class="scenario-before">
-                    <div class="scenario-label">Before</div>
-                    <p>Claude Code writes skills to <code>~/.agents/skills/</code>. Codex can't see them. You copy files manually or build sync scripts.</p>
-                </div>
-                <div class="scenario-after">
-                    <div class="scenario-label">After</div>
-                    <p>Both agents mount <code>drive9 mount :/skills ~/drive9-skills</code>. One agent writes a skill, the other reads it immediately. Same namespace, zero sync.</p>
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Filesystem for AI agents</p>
+                <h1>One filesystem for every agent.</h1>
+                <p class="hero-subtitle">
+                    Mount a shared remote workspace into Claude Code, Codex, and your own agents.
+                    They read, write, and hand off files through the same paths.
+                </p>
+                <div class="hero-actions">
+                    <a href="#install" class="button primary">Install drive9</a>
+                    <a href="#use" class="button secondary">See how it works</a>
                 </div>
             </div>
 
-            <!-- Agent capabilities -->
-            <div class="capabilities-grid">
-                <div class="capability-card">
-                    <h3>Mount as local filesystem</h3>
-                    <p>Mount drive9 at any local path. Use <code>ls</code>, <code>cat</code>, <code>vim</code>, <code>cp</code> &mdash; agents work without code changes.</p>
-                    <div class="capability-so-what">No new SDK or API needed. Agents just read and write files.</div>
+            <div class="terminal-card" aria-label="drive9 quick start commands">
+                <div class="terminal-bar">
+                    <span></span><span></span><span></span>
                 </div>
-                <div class="capability-card">
-                    <h3>Shared namespace</h3>
-                    <p>Multiple agents mount the same remote directory. One writes, others see the change on next read.</p>
-                    <div class="capability-so-what">Cross-agent collaboration without sync infrastructure.</div>
-                </div>
-                <div class="capability-card">
-                    <h3>Large-file reliability</h3>
-                    <p>Streaming upload/download with automatic resume. Works for configs and datasets alike.</p>
-                    <div class="capability-so-what">No partial uploads, no manual retry scripts.</div>
-                </div>
-                <div class="capability-card">
-                    <h3>Zero-copy operations</h3>
-                    <p>Copy and rename without re-uploading data. Metadata-only, instant.</p>
-                    <div class="capability-so-what">Restructure data without re-uploading or extra storage cost.</div>
+                <pre><code>$ drive9 create
+$ drive9 fs mkdir :/skills
+$ mkdir -p ~/drive9-skills
+$ drive9 mount :/skills ~/drive9-skills</code></pre>
+                <p>Now every agent uses <code>~/drive9-skills</code> like a normal folder.</p>
+            </div>
+        </section>
+
+        <section class="section compact" id="use">
+            <div class="section-heading">
+                <p class="eyebrow">How agents use it</p>
+                <h2>It is a shared folder, not another integration.</h2>
+            </div>
+            <div class="steps">
+                <article>
+                    <span class="step-number">01</span>
+                    <h3>Mount a workspace</h3>
+                    <p>Expose a remote namespace at a local path your agent already knows how to use.</p>
+                </article>
+                <article>
+                    <span class="step-number">02</span>
+                    <h3>Read and write files</h3>
+                    <p>Agents use normal filesystem operations: <code>ls</code>, <code>cat</code>, <code>cp</code>, editors, and tools.</p>
+                </article>
+                <article>
+                    <span class="step-number">03</span>
+                    <h3>Hand off work</h3>
+                    <p>One agent writes to the workspace. Another reads from the same namespace on next read.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section scenario">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Core use case</p>
+                <h2>Claude Code writes. Codex reads. No sync glue.</h2>
+            </div>
+            <div class="before-after">
+                <article>
+                    <p class="card-label">Before</p>
+                    <h3>Files stay trapped inside one tool.</h3>
+                    <p>Skills, artifacts, and working state land in tool-specific local folders. Sharing means copy scripts, env vars, or manual handoff.</p>
+                </article>
+                <article class="after">
+                    <p class="card-label">After</p>
+                    <h3>Agents share one remote namespace.</h3>
+                    <p>Mount <code>:/skills</code> into each agent environment. One agent writes a file; the next agent reads the same path.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section primitives">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Filesystem primitives</p>
+                <h2>The agent-facing surface stays small.</h2>
+            </div>
+            <div class="primitive-grid">
+                <article>
+                    <h3>Mount</h3>
+                    <p>Use drive9 as a local directory.</p>
+                </article>
+                <article>
+                    <h3>Read / write / list</h3>
+                    <p>Work with files through existing tools.</p>
+                </article>
+                <article>
+                    <h3>Copy / move</h3>
+                    <p>Restructure workspace files without re-uploading bytes.</p>
+                </article>
+                <article>
+                    <h3>Large files</h3>
+                    <p>Stream uploads and downloads without custom retry glue.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section built-on-top" id="built-on-top">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Built on top</p>
+                <h2>Semantic workflows are solutions on the filesystem.</h2>
+                <p>
+                    First, agents share files. Then drive9 can index supported files so people,
+                    apps, and agents can search what the workspace produces.
+                </p>
+            </div>
+            <div class="solution-row">
+                <article>
+                    <h3>Team knowledge workspace</h3>
+                    <p>Put docs and runbooks where agents can mount them. Search supported content with <code>drive9 fs grep</code>.</p>
+                </article>
+                <article>
+                    <h3>Searchable asset library</h3>
+                    <p>Use the same filesystem as storage substrate; add search over supported files when the product needs it.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section install" id="install">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Get started</p>
+                <h2>Mount the first workspace.</h2>
+            </div>
+            <div class="install-card">
+                <pre><code>$ curl -fsSL https://drive9.ai/install.sh | sh
+$ drive9 create
+$ drive9 fs mkdir :/skills
+$ mkdir -p ~/drive9-skills
+$ drive9 mount :/skills ~/drive9-skills</code></pre>
+                <div class="install-links">
+                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+                    <a href="https://drive9.ai/skill.md">skill.md</a>
+                    <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ============================================
-         TRANSITION
-         ============================================ -->
-    <section class="transition-section">
-        <div class="container">
-            <h2 class="transition-heading">Agents need a filesystem first.<br><span class="gradient-text">Teams build on top.</span></h2>
-            <p class="transition-sub">Once agents share a workspace, teams can search, organize, and build on top of what they produce.</p>
-        </div>
-    </section>
-
-    <!-- ============================================
-         BUILT ON TOP — Human / team layer
-         ============================================ -->
-    <section class="built-on-top-section" id="built-on-top">
-        <div class="container">
-            <div class="section-label-bar">
-                <span class="section-label-badge">Built on top</span>
+        <section class="section details">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Details</p>
+                <h2>Keep the model simple.</h2>
             </div>
-            <h2 class="section-title">What teams build on top</h2>
-            <p class="section-subtitle">Search, organize, and manage the files your agents produce.</p>
-
-            <div class="scenarios-grid">
-                <!-- Team Knowledge -->
-                <div class="scenario-card">
-                    <div class="scenario-header">
-                        <h3>Team Knowledge Workspace</h3>
-                    </div>
-                    <div class="scenario-before">
-                        <div class="scenario-label">Before</div>
-                        <p>Company docs, prompts, and runbooks live in Notion, Google Drive, and local repos. Agents can't access them without per-tool integrations.</p>
-                    </div>
-                    <div class="scenario-after">
-                        <div class="scenario-label">After</div>
-                        <p>Upload team knowledge to drive9. Agents mount and search it with <code>drive9 fs grep "deploy procedure"</code>. Humans organize and tag files.</p>
-                    </div>
-                    <div class="scenario-tags">
-                        <span class="tag">search</span>
-                        <span class="tag">team sharing</span>
-                        <span class="tag">tagging</span>
-                    </div>
-                </div>
-
-                <!-- Searchable Asset Library -->
-                <div class="scenario-card">
-                    <div class="scenario-header">
-                        <h3>Searchable Asset Library</h3>
-                    </div>
-                    <div class="scenario-before">
-                        <div class="scenario-label">Before</div>
-                        <p>Images and documents are uploaded to S3. Finding "the architecture diagram from last quarter" means grepping filenames or maintaining a separate index.</p>
-                    </div>
-                    <div class="scenario-after">
-                        <div class="scenario-label">After</div>
-                        <p>Upload to drive9. Supported files are indexed for search. Find by meaning: <code>drive9 fs grep "architecture diagram Q1"</code> finds it by content, not filename.</p>
-                    </div>
-                    <div class="scenario-tags">
-                        <span class="tag">supported-file indexing</span>
-                        <span class="tag">semantic search</span>
-                        <span class="tag">media</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Human capabilities -->
-            <div class="capabilities-grid capabilities-human">
-                <div class="capability-card">
-                    <h3>Semantic search, built in</h3>
-                    <p>Searchable text is extracted from supported files. Combine semantic, full-text, and keyword search to find files by meaning.</p>
-                    <div class="capability-so-what">Find relevant files without knowing exact names or paths.</div>
-                </div>
-                <div class="capability-card">
-                    <h3>Tagging &amp; organization</h3>
-                    <p>Tag files with key-value metadata. Filter and find across directories. Build workflows around structured metadata.</p>
-                    <div class="capability-so-what">Organize agent output into manageable knowledge bases.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         WORKS WITH — Trust strip
-         ============================================ -->
-    <section class="works-with-section">
-        <div class="container">
-            <div class="works-with-strip">
-                <span class="works-with-item">Claude Code</span>
-                <span class="works-with-divider">&middot;</span>
-                <span class="works-with-item">Codex</span>
-                <span class="works-with-divider">&middot;</span>
-                <span class="works-with-item">Cursor</span>
-                <span class="works-with-divider">&middot;</span>
-                <span class="works-with-item">Cline</span>
-                <span class="works-with-divider">&middot;</span>
-                <span class="works-with-item">VS Code</span>
-                <span class="works-with-divider">&middot;</span>
-                <span class="works-with-item">Custom agents</span>
-            </div>
-            <p class="works-with-sub">drive9 works with any tool that reads and writes files.</p>
-        </div>
-    </section>
-
-    <!-- ============================================
-         GETTING STARTED — Agent FS path only
-         ============================================ -->
-    <section class="getting-started-section" id="getting-started">
-        <div class="container">
-            <h2 class="section-title">Get started</h2>
-            <p class="section-subtitle">One path to first value.</p>
-
-            <div class="getting-started-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Install CLI</h4>
-                        <div class="cli-box">
-                            <div class="cli-header">
-                                <span class="cli-label">Terminal</span>
-                                <button class="cli-copy" onclick="copyToClipboard(this)">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <code class="cli-code">$ curl -fsSL https://drive9.ai/install.sh | sh</code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Create a workspace</h4>
-                        <div class="cli-box">
-                            <div class="cli-header">
-                                <span class="cli-label">Terminal</span>
-                            </div>
-                            <code class="cli-code">$ drive9 create<br>$ drive9 fs mkdir :/skills</code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Mount and use</h4>
-                        <div class="cli-box">
-                            <div class="cli-header">
-                                <span class="cli-label">Terminal</span>
-                            </div>
-                            <code class="cli-code">$ mkdir -p ~/drive9-skills<br>$ drive9 mount :/skills ~/drive9-skills<br>$ ls ~/drive9-skills/</code>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="getting-started-links">
-                <a href="https://drive9.ai/skill.md" class="secondary-link">For agents: skill.md</a>
-                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" class="secondary-link">SDK &amp; API</a>
-                <a href="https://github.com/mem9-ai/drive9" target="_blank" class="secondary-link">GitHub</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         FAQ
-         ============================================ -->
-    <section class="faq-section" id="faq">
-        <div class="container">
-            <h2 class="section-title">Frequently asked questions</h2>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>Is my data secure?</summary>
-                    <p>Data is encrypted in transit (TLS). Each workspace is isolated per tenant.</p>
+            <div class="detail-list">
+                <details>
+                    <summary>Is drive9 a cloud drive?</summary>
+                    <p>It is a filesystem layer for agents first. Human-facing search and knowledge workflows are built on that layer.</p>
                 </details>
-                <details class="faq-item">
-                    <summary>Where is data stored?</summary>
-                    <p>Metadata and small files are stored in the drive9 backend (db9). Larger files use tiered object storage (S3) via presigned URLs. Search indexes are maintained alongside metadata.</p>
+                <details>
+                    <summary>How is it different from S3?</summary>
+                    <p>S3 is blob storage. drive9 gives agents directories, paths, mount, and file operations.</p>
                 </details>
-                <details class="faq-item">
-                    <summary>Why does drive9 use FUSE / WebDAV locally?</summary>
-                    <p>To present the remote workspace as a local directory. Your agents and tools read/write files normally &mdash; drive9 handles sync in the background.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>How is drive9 different from S3?</summary>
-                    <p>S3 is blob storage. drive9 is a filesystem with directories, metadata, search, and mount. Agents use it like a local drive, not an object API.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>How is drive9 different from a vector database?</summary>
-                    <p>A vector DB searches embeddings. drive9 is a full filesystem that includes search. You don't need a separate vector DB pipeline.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>Can multiple agents share one workspace?</summary>
-                    <p>Yes. That's the primary use case. Multiple agents mount the same remote namespace and see each other's changes.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What does it cost?</summary>
-                    <p>Free during beta.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What is mem9?</summary>
-                    <p>mem9 is a separate product for agent memory (conversation history, learned facts). drive9 is for files and workspace. They are complementary but independent.</p>
+                <details>
+                    <summary>How is search handled?</summary>
+                    <p>Search is an upper-layer workflow over supported files in the workspace, not the first thing agents need to understand.</p>
                 </details>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- ============================================
-         FOOTER
-         ============================================ -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <a href="#" class="logo">
-                        <span class="logo-icon">&#9670;</span>
-                        <span class="logo-text">drive9</span>
-                    </a>
-                    <p class="footer-tagline">Shared filesystem for AI agents.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Resources</h4>
-                    <a href="https://github.com/mem9-ai/drive9" target="_blank">GitHub</a>
-                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank">Documentation</a>
-                    <a href="skill.md">Skill File</a>
-                </div>
-                <div class="footer-links">
-                    <h4>Legal</h4>
-                    <a href="#">Privacy</a>
-                    <a href="#">Contact</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Apache 2.0 License</p>
-            </div>
+    <footer class="site-footer">
+        <p>drive9 — filesystem for AI agents</p>
+        <div>
+            <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
+            <span>Apache 2.0 License</span>
         </div>
     </footer>
-
-    <script>
-        function copyToClipboard(button) {
-            const code = button.closest('.cli-box').querySelector('.cli-code').textContent;
-            const cleanCode = code.replace(/^\$\s*/gm, '').trim();
-            navigator.clipboard.writeText(cleanCode).then(() => {
-                const original = button.innerHTML;
-                button.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                setTimeout(() => {
-                    button.innerHTML = original;
-                }, 2000);
-            });
-        }
-
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // FAQ accordion
-        document.querySelectorAll('.faq-item summary').forEach(summary => {
-            summary.addEventListener('click', function () {
-                const parent = this.parentElement;
-                document.querySelectorAll('.faq-item[open]').forEach(item => {
-                    if (item !== parent) item.removeAttribute('open');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
