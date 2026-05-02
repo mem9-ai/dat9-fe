@@ -4,174 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drive9 — filesystem skill for AI agents</title>
-    <meta name="description" content="drive9 gives AI agents a filesystem skill. Humans set up the workspace with CLI; agents use the skill to read, write, search, and hand off files.">
+    <meta name="description" content="drive9 gives AI agents a filesystem skill: persistent files, shared paths, and handoff across sessions.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="site-header">
-        <a href="#" class="brand" aria-label="drive9 home">
-            <span class="brand-mark">d9</span>
-            <span class="brand-name">drive9</span>
-        </a>
-        <nav class="nav-links" aria-label="Primary navigation">
-            <a href="#skill">Agent skill</a>
-            <a href="#setup">Setup once</a>
-            <a href="#use-case">Core use case</a>
-            <a href="#built-on-top">Built on top</a>
-            <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
-        </nav>
-    </header>
+    <main class="page">
+        <header class="topbar">
+            <a class="brand" href="#" aria-label="drive9 home">drive9</a>
+        </header>
 
-    <main>
-        <section class="hero">
+        <section class="hero" aria-labelledby="hero-title">
             <div class="hero-copy">
-                <p class="eyebrow">Filesystem skill for AI agents</p>
-                <h1>Give agents a filesystem skill.</h1>
-                <p class="hero-subtitle">
-                    Agents read <code>skill.md</code>. The skill gives them a shared workspace:
-                    where files live, when to persist them, and how to hand off artifacts.
+                <p class="eyebrow">For AI agents</p>
+                <h1 id="hero-title">Give agents a filesystem skill.</h1>
+                <p class="subcopy">
+                    Agents read <code>skill.md</code>. Humans set up the workspace once.
+                    Files survive sessions and move between agents through shared paths.
                 </p>
-                <div class="hero-actions">
-                    <a href="#skill" class="button primary">See the agent skill</a>
-                    <a href="#setup" class="button secondary">Set it up once</a>
-                </div>
             </div>
 
-            <div class="skill-doc-card" aria-label="drive9 skill excerpt">
-                <div class="doc-header">
+            <article class="skill-paper" aria-label="drive9 skill excerpt">
+                <div class="paper-head">
                     <span>skill.md</span>
-                    <span>agent-readable contract</span>
+                    <span>agent contract</span>
                 </div>
-                <div class="doc-body">
-                    <p class="doc-title"># drive9</p>
+                <div class="paper-body">
+                    <p class="paper-title"># drive9</p>
                     <p>You have a persistent workspace.</p>
                     <ul>
                         <li>Use it when files must survive this session.</li>
                         <li>Use it when another agent needs your artifacts.</li>
                         <li>Use it when the user asks to find saved work.</li>
                     </ul>
-                    <p>The workspace is addressed with shared paths.</p>
+                    <p>Use shared paths. Do not invent another storage layer.</p>
                 </div>
-                <p class="doc-caption">For agents, drive9 starts as a skill file, not a setup screen.</p>
-            </div>
+            </article>
         </section>
 
-        <section class="section compact" id="skill">
-            <div class="section-heading">
-                <p class="eyebrow">Agent interface</p>
-                <h2>The skill is the agent-facing interface.</h2>
-                <p>
-                    Agents read the skill once and know when to use drive9, where shared files live, and how to pass artifacts to the next agent.
-                </p>
-            </div>
-            <div class="steps">
-                <article>
-                    <span class="step-number">01</span>
-                    <h3>Read the skill</h3>
-                    <p>The agent learns the drive9 contract: workspace paths, persistence rules, and handoff behavior.</p>
-                </article>
-                <article>
-                    <span class="step-number">02</span>
-                    <h3>Use the workspace</h3>
-                    <p>The agent stores files, reads prior work, and searches saved content through the skill instructions.</p>
-                </article>
-                <article>
-                    <span class="step-number">03</span>
-                    <h3>Hand off files</h3>
-                    <p>Another agent with the same skill can continue from the same workspace.</p>
-                </article>
-            </div>
+        <section class="setup" aria-label="Human setup">
+            <p>Setup once</p>
+            <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
+            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Read the docs</a>
         </section>
 
-        <section class="section scenario" id="use-case">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Core use case</p>
-                <h2>Claude Code learns the skill. Codex uses the same workspace.</h2>
-            </div>
-            <div class="before-after">
-                <article>
-                    <p class="card-label">Before</p>
-                    <h3>Each agent keeps files in its own context.</h3>
-                    <p>Skills, artifacts, and working state stay trapped in tool-specific local folders or session memory.</p>
-                </article>
-                <article class="after">
-                    <p class="card-label">After</p>
-                    <h3>Agents share one filesystem skill.</h3>
-                    <p>The skill tells agents how to use the workspace. One agent writes an artifact; the next agent reads it from the same path.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="section install" id="setup">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Setup once</p>
-                <h2>A human wires the filesystem in.</h2>
-                <p>CLI setup prepares the workspace that the skill refers to. It is not the agent-facing product story.</p>
-            </div>
-            <div class="install-card">
-                <pre><code>$ curl -fsSL https://drive9.ai/install.sh | sh
-$ drive9 create
-$ drive9 fs mkdir :/skills
-$ mkdir -p ~/drive9-skills
-$ drive9 mount :/skills ~/drive9-skills</code></pre>
-                <div class="install-links">
-                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
-                    <a href="https://drive9.ai/skill.md">skill.md</a>
-                    <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section built-on-top" id="built-on-top">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Built on top</p>
-                <h2>Search and organize, built on the agent filesystem skill.</h2>
-                <p>
-                    First, agents get a filesystem skill. Then supported files can be indexed so
-                    people, apps, and agents search what the workspace produces.
-                </p>
-            </div>
-            <div class="solution-row">
-                <article>
-                    <h3>Team knowledge workspace</h3>
-                    <p>Put docs and runbooks in the workspace. Agents discover them through the skill; humans can search supported content.</p>
-                </article>
-                <article>
-                    <h3>Searchable asset library</h3>
-                    <p>Use the same filesystem as the storage substrate; add search over supported files when the product needs it.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="section details">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Details</p>
-                <h2>Keep the model simple.</h2>
-            </div>
-            <div class="detail-list">
-                <details>
-                    <summary>Is drive9 a cloud drive?</summary>
-                    <p>It is a filesystem skill and workspace for agents first. Human-facing search and knowledge workflows are built on that layer.</p>
-                </details>
-                <details>
-                    <summary>How is it different from S3?</summary>
-                    <p>S3 is blob storage. drive9 gives agents directories, paths, mount, and file operations.</p>
-                </details>
-                <details>
-                    <summary>How is search handled?</summary>
-                    <p>Search is an upper-layer workflow over supported files in the workspace. The first thing agents need is the filesystem skill.</p>
-                </details>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <p>drive9 — filesystem skill for AI agents</p>
-        <div>
+        <footer>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
-            <span>Apache 2.0 License</span>
-        </div>
-    </footer>
+            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+            <a href="https://drive9.ai/skill.md">skill.md</a>
+            <span>Search and semantic workflows are built on top.</span>
+        </footer>
+    </main>
 </body>
 </html>
