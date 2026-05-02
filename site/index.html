@@ -4,36 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drive9 — persistent filesystem for AI agents</title>
-    <meta name="description" content="Tell your agent to read the drive9 skill and follow the instructions to install and configure drive9.">
+    <meta name="description" content="Give your agent one instruction: read skill.md and follow the instructions to install and configure drive9.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <main class="page">
         <header class="topbar">
-            <a class="brand" href="#" aria-label="drive9 home">drive9</a>
+            <a class="brand" href="/" aria-label="drive9 home">drive9</a>
         </header>
 
         <section class="hero" aria-labelledby="hero-title">
-            <p class="eyebrow">For AI agents</p>
+            <p class="eyebrow">For your agent</p>
             <h1 id="hero-title">Give your agent one instruction.</h1>
             <div class="instruction" aria-label="Agent instruction">
-                <span>Read https://drive9.ai/skill.md and follow the instructions.</span>
+                <span>Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.</span>
             </div>
         </section>
 
-        <section class="trust" aria-label="Security">
-            <p><strong>Security</strong> Encrypted in transit. Tenant-isolated. Access-controlled.</p>
-            <a href="/security.html">Details</a>
-        </section>
+        <section class="human" aria-label="For you">
+            <p class="human-label">For you</p>
 
-        <section class="setup" aria-label="Human setup">
-            <p>Human setup</p>
-            <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
-            <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+            <section class="trust" aria-label="Security">
+                <p><strong>Security</strong> Encrypted in transit. Tenant-isolated. Access-controlled.</p>
+                <a href="/security.html">Details</a>
+            </section>
+
+            <section class="faq-strip" aria-label="FAQ">
+                <p><strong>FAQ</strong> What is drive9? How do I get started? Is my data secure?</p>
+                <a href="/faq.html">Read FAQ</a>
+            </section>
+
+            <section class="setup" aria-label="Install">
+                <p>Install</p>
+                <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
+                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+            </section>
         </section>
 
         <footer>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="/security.html">Security</a>
+            <a href="/faq.html">FAQ</a>
             <a href="https://drive9.ai/skill.md">skill.md</a>
         </footer>
     </main>
