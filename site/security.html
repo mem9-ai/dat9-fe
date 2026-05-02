@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security — drive9</title>
+    <meta name="description" content="How drive9 protects agent filesystem data with encrypted transport, tenant isolation, access controls, and scoped vault protections.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="page secondary-page">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="drive9 home">drive9</a>
+        </header>
+
+        <article class="secondary-content">
+            <h1>Security &amp; Privacy</h1>
+
+            <p class="secondary-intro">
+                drive9 gives agents persistent storage without making data boundaries implicit. The system separates tenant data, controls access through credentials, and keeps network traffic encrypted.
+            </p>
+
+            <section>
+                <h2>Encrypted in transit</h2>
+                <p>
+                    Client-server traffic is protected with TLS. Agent filesystem operations, API calls, and setup flows are designed to move over encrypted transport.
+                </p>
+            </section>
+
+            <section>
+                <h2>Tenant-isolated by design</h2>
+                <p>
+                    drive9 uses tenant-scoped storage boundaries. Tenant identity routes requests to the correct backend, keeping each tenant's workspace on its own storage path. Vault secrets also use per-tenant encryption keys.
+                </p>
+            </section>
+
+            <section>
+                <h2>Access-controlled</h2>
+                <p>
+                    Filesystem access requires valid credentials and authenticated requests. Agents only operate with the workspace configuration they are given. Vault secret access adds scoped capability tokens for secret materialization.
+                </p>
+            </section>
+
+            <section>
+                <h2>Vault secret protections</h2>
+                <p>
+                    Vault secrets have additional protections beyond the filesystem path: secret values are encrypted at rest with per-tenant data encryption keys, materialization is scoped by capability tokens, and server-side secret reads are written to an append-only audit log.
+                </p>
+            </section>
+
+            <section>
+                <h2>Operational boundary</h2>
+                <p>
+                    drive9 protects storage, transport, tenant boundaries, and controlled access. Once data is intentionally provided to an agent process, the agent and its environment are responsible for how that data is used. Treat API keys and agent credentials like passwords.
+                </p>
+            </section>
+        </article>
+
+        <footer>
+            <div class="footer-brand">drive9</div>
+            <nav class="footer-links" aria-label="Footer">
+                <a href="/">Home</a>
+                <span class="footer-sep">/</span>
+                <a href="/faq.html">FAQ</a>
+                <span class="footer-sep">/</span>
+                <a href="/sdk.html">SDK</a>
+                <span class="footer-sep">/</span>
+                <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+            </nav>
+            <a class="powered-by" href="https://www.pingcap.com?utm_source=drive9&utm_medium=referral" target="_blank" rel="noreferrer">Powered by TiDB Cloud <img src="/tidb-logo.svg" alt="TiDB Cloud" width="20" height="23"></a>
+            <p class="footer-tagline">drive9.ai. Unlimited storage for AI agents.</p>
+        </footer>
+    </main>
+</body>
+</html>

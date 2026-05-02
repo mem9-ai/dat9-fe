@@ -3,685 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>drive9 — Agent workspace for files, secrets, and retrieval</title>
-    <meta name="description" content="drive9 gives AI agents a filesystem workspace with semantic search, resumable uploads, context management, and read-only vault secret mounts.">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ6NGGWSZN"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            window.dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-QJ6NGGWSZN');
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>drive9 — persistent filesystem for AI agents</title>
+    <meta name="description" content="Unlimited storage for AI agents. Files persist across sessions, tools, and machines.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Background Grid -->
-    <div class="bg-grid"></div>
-    
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <span class="logo-icon">◆</span>
-                <span class="logo-text">drive9</span>
-            </a>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#cli">CLI</a>
-                <a href="#sdk">SDK</a>
-                <a href="https://github.com/mem9-ai/drive9" target="_blank" class="nav-github">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
+    <main class="page">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="drive9 home">drive9</a>
+        </header>
+
+        <section class="hero" aria-labelledby="hero-title">
+            <p class="eyebrow">For your agent</p>
+            <h1 id="hero-title">Unlimited storage for AI agents.</h1>
+            <p class="subcopy">Files persist across sessions, tools, and machines.</p>
+            <div class="instruction" aria-label="Copy agent instruction" role="button" tabindex="0" data-copy-text="Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.">
+                <p class="instruction-label">Install for Agent</p>
+                <span>Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.</span>
             </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="hero-title">
-                Agent Workspace<br>
-                <span class="gradient-text">for Files, Artifacts, and Retrieval</span>
-            </h1>
-            <p class="hero-subtitle">
-                drive9 extends agent state beyond memory with files, contexts, and vault secrets.
-            </p>
-            <a href="https://www.pingcap.com" target="_blank" rel="noopener noreferrer" class="hero-powered">
-                <span class="hero-powered-text">Powered by TiDB Cloud</span>
-                <img src="tidb-logo.svg" alt="TiDB" width="28" height="31" class="hero-powered-logo">
-            </a>
-
-            <!-- CLI Install -->
-            <div class="cli-box">
-                <div class="cli-header">
-                    <span class="cli-label">CLI</span>
-                    <button class="cli-copy" onclick="copyToClipboard(this)">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                    </button>
-                </div>
-                <code class="cli-code">$ curl -fsSL https://drive9.ai/install.sh | sh</code>
-                <div class="cli-meta">macOS / Linux (x86_64, arm64)</div>
-            </div>
-
-            <!-- AI Agents Badge -->
-            <div class="agents-section">
-                <div class="agents-label">AI Agents</div>
-                <div class="agents-instruction">
-                    <code>Read https://drive9.ai/skill.md and follow instructions</code>
-                </div>
-                <p class="agents-desc">Your agent learns to install, auth, and use drive9 autonomously</p>
-            </div>
-
-            <!-- Tool Ecosystem -->
-            <div class="ecosystem">
-                <p class="ecosystem-label">drive9 works with any agent and stack</p>
-                <div class="ecosystem-grid">
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◆</div>
-                        <span>Claude Code</span>
-                    </div>
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◇</div>
-                        <span>OpenAI Codex</span>
-                    </div>
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◆</div>
-                        <span>Cursor</span>
-                    </div>
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◇</div>
-                        <span>Cline</span>
-                    </div>
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◆</div>
-                        <span>VS Code</span>
-                    </div>
-                    <div class="ecosystem-item">
-                        <div class="ecosystem-icon">◇</div>
-                        <span>mem9</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Use Cases Section -->
-    <section class="use-cases" id="features">
-        <div class="container">
-            <h2 class="section-title">Why drive9?</h2>
-            <p class="section-subtitle">Built for AI agents, designed for developers.</p>
-            <p class="section-inline-link">
-                <a href="https://mem9.ai?utm_source=drive9&utm_medium=referral&utm_campaign=agent-state-stack" target="_blank" rel="noopener noreferrer">
-                    If you’re primarily solving persistent memory, start with mem9 →
-                </a>
-            </p>
-            <div class="use-cases-grid">
-                <!-- Use Case 1 -->
-                <div class="use-case-card">
-                    <div class="use-case-header">
-                        <h3>Search by meaning</h3>
-                        <p>Find files by content, not just filename</p>
-                    </div>
-                    <div class="use-case-body">
-                        <p>All files are automatically embedded and indexed. Query by meaning using natural language. Smart summaries let agents scan quickly before loading full content.</p>
-                    </div>
-                    <div class="use-case-footer">
-                        <span class="tag">Auto-embedding</span>
-                        <span class="tag">Vector search</span>
-                        <span class="tag">Smart summaries</span>
-                    </div>
-                </div>
-
-                <!-- Use Case 2 -->
-                <div class="use-case-card">
-                    <div class="use-case-header">
-                        <h3>Any file size</h3>
-                        <p>From configs to datasets — seamless handling</p>
-                    </div>
-                    <div class="use-case-body">
-                        <p>Efficient upload and download with automatic resume support. Optimized data flow for any file size with streaming and retry built in.</p>
-                    </div>
-                    <div class="use-case-footer">
-                        <span class="tag">Auto-resume</span>
-                        <span class="tag">Streaming</span>
-                        <span class="tag">Reliable</span>
-                    </div>
-                </div>
-
-                <!-- Use Case 3 -->
-                <div class="use-case-card">
-                    <div class="use-case-header">
-                        <h3>Zero-copy operations</h3>
-                        <p>Copy and rename without re-upload</p>
-                    </div>
-                    <div class="use-case-body">
-                        <p>Copy without re-upload. Rename instantly. One file can appear at multiple paths. Efficient storage management handles cleanup automatically.</p>
-                    </div>
-                    <div class="use-case-footer">
-                        <span class="tag">Instant copy</span>
-                        <span class="tag">Fast rename</span>
-                        <span class="tag">Efficient storage</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Everything your agent needs</h2>
-            <p class="section-subtitle">Search, store, mount, and manage files through a familiar filesystem interface.</p>
-
-            <div class="features-grid">
-                <!-- Feature 1: Semantic Search -->
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Semantic search, built in</h3>
-                    <p>Find files by meaning. Auto-embeddings and vector search powered by TiDB Cloud — no external pipeline, no API keys in your code.</p>
-                    <div class="code-block">
-                        <code># Search for configs related to deployment<br>
-$ drive9 fs grep "deploy to production" /<br>
-<br>
-/config/prod.env    0.91<br>
-/scripts/deploy.sh  0.84<br>
-/docs/deployment.md 0.78</code>
-                    </div>
-                    <div class="replaces">
-                        <span class="replaces-label">replaces</span>
-                        <span class="replaces-item">vector DB</span>
-                        <span class="replaces-item">embedding pipeline</span>
-                    </div>
-                </div>
-
-                <!-- Feature 2: Local Mount -->
-                <div class="feature-card">
-                    <div class="feature-icon">📂</div>
-                    <h3>Mount like local storage</h3>
-                    <p>Mount a drive9 remote path as a local filesystem, or mount vault secrets read-only. Use <code>ls</code>, <code>cat</code>, <code>vim</code>, <code>cp</code> directly on your data.</p>
-                    <div class="code-block">
-                        <code>$ drive9 mount :/data /mnt/drive9<br>
-$ ls /mnt/drive9/<br>
-dataset.tar  config.json  logs/<br>
-<br>
-$ drive9 mount vault /mnt/secrets</code>
-                    </div>
-                    <div class="replaces">
-                        <span class="replaces-label">replaces</span>
-                        <span class="replaces-item">S3 clients</span>
-                        <span class="replaces-item">sync tools</span>
-                    </div>
-                </div>
-
-                <!-- Feature 3: Tiered Context -->
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <h3>Smart summaries</h3>
-                    <p>Every directory can carry <code>.abstract.md</code> and <code>.overview.md</code>. Agents scan cheaply before loading full content — saving tokens and time.</p>
-                    <div class="code-block">
-                        <code>$ drive9 fs cat :/data/.overview.md<br>
-Dataset: Image classification training data<br>
-Size: 50K images, 10 classes<br>
-Format: PNG, 224x224<br>
-Updated: 2024-01-15</code>
-                    </div>
-                    <div class="replaces">
-                        <span class="replaces-label">replaces</span>
-                        <span class="replaces-item">manual summarization</span>
-                        <span class="replaces-item">context overflow</span>
-                    </div>
-                </div>
-
-                <!-- Feature 4: Zero-Copy Operations -->
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Zero-copy cp & mv</h3>
-                    <p>Copy files without re-upload. Rename instantly. All metadata operations — no data movement, no storage cost for duplicates.</p>
-                    <div class="code-block">
-                        <code># Zero-copy link — no re-upload<br>
-$ drive9 fs cp :/data/file.bin :/backup/file.bin<br>
-<br>
-# Metadata-only rename<br>
-$ drive9 fs mv :/old/name.txt :/new/name.txt</code>
-                    </div>
-                    <div class="replaces">
-                        <span class="replaces-label">replaces</span>
-                        <span class="replaces-item">duplicate storage</span>
-                        <span class="replaces-item">slow renames</span>
-                    </div>
-                </div>
-
-                <!-- Feature 5: Multi-language SDKs -->
-                <div class="feature-card">
-                    <div class="feature-icon">🛠</div>
-                    <h3>Multi-language SDKs</h3>
-                    <p>Build agent tools in Go, Python, TypeScript, or Rust. Streaming, resume, and context cancellation built in.</p>
-                    <div class="code-block">
-                        <code>$ go get github.com/mem9-ai/drive9/pkg/client<br>
-$ pip install drive9<br>
-$ npm install drive9<br>
-$ cargo add drive9</code>
-                    </div>
-                    <div class="replaces">
-                        <span class="replaces-label">replaces</span>
-                        <span class="replaces-item">S3 SDKs</span>
-                        <span class="replaces-item">HTTP boilerplate</span>
-                    </div>
-                </div>
-
-                <a href="https://zero.tidbcloud.com?utm_source=drive9&utm_medium=referral&utm_campaign=agent-state-stack" target="_blank" rel="noopener noreferrer" class="feature-card feature-card-subtle">
-                    If your agent needs the backend substrate behind drive9, explore via TiDB Cloud Zero →
-                </a>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Highlights Section -->
-    <section class="highlights">
-        <div class="container">
-            <div class="highlights-grid">
-                <div class="highlight-card">
-                    <div class="highlight-icon">🔍</div>
-                    <h4>Semantic Search</h4>
-                    <p>Find files by meaning with vector similarity and full-text search</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">⚡</div>
-                    <h4>Zero-Copy</h4>
-                    <p>Instant copy and rename without data movement</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">🏷️</div>
-                    <h4>Tagging</h4>
-                    <p>Organize and filter files with key-value tags</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">⬆️</div>
-                    <h4>Resumable Uploads</h4>
-                    <p>Reliable upload with automatic resume support</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CLI Section -->
-    <section class="cli-section" id="cli">
-        <div class="container">
-            <h2 class="section-title">Unix-like CLI</h2>
-            <p class="section-subtitle">Familiar commands for contexts, files, vault secrets, and local mounts.</p>
-
-            <div class="cli-examples">
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 fs cp --tag env=prod --description "production config" ./local.txt :/remote/path.txt</span>
-                    </div>
-                    <p class="cli-example-desc">Upload a file with tags and a description. Resumable, streamable, automatically indexed.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 fs cat :/config/settings.json</span>
-                    </div>
-                    <p class="cli-example-desc">Read file contents to stdout. Copy supports local files, remote paths, stdin, and stdout.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 fs ls -l :/data/</span>
-                    </div>
-                    <p class="cli-example-desc">List directory contents with size, modified time, and type details.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 fs cp :/data/a.bin :/shared/a.bin</span>
-                    </div>
-                    <p class="cli-example-desc">Zero-copy link — same file, new path. No re-upload, no extra storage.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 fs mv :/old/name.txt :/new/name.txt</span>
-                    </div>
-                    <p class="cli-example-desc">Rename or move. Metadata-only operation, instant completion.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 ctx add --api-key &lt;key&gt; --name prod</span>
-                    </div>
-                    <p class="cli-example-desc">Manage owner and delegated contexts: add, import, ls, use, rm — switch between databases instantly.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 mount :/data /mnt/drive9</span>
-                    </div>
-                    <p class="cli-example-desc">Mount a remote path as a local filesystem. Use standard tools directly.</p>
-                </div>
-
-                <div class="cli-example">
-                    <div class="cli-example-header">
-                        <span class="cli-example-prompt">$</span>
-                        <span class="cli-example-cmd">drive9 mount vault /mnt/secrets</span>
-                    </div>
-                    <p class="cli-example-desc">Mount vault secrets read-only as a local filesystem for app consumption.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SDK Section -->
-    <section class="sdk-section" id="sdk">
-        <div class="container">
-            <h2 class="section-title">Multi-language SDKs</h2>
-            <p class="section-subtitle">Build agent tools with streaming, resume, and context support in your language of choice.</p>
-
-            <div class="sdk-code">
-                <div class="sdk-tabs">
-                    <button class="sdk-tab active" data-tab="go">Go</button>
-                    <button class="sdk-tab" data-tab="python">Python</button>
-                    <button class="sdk-tab" data-tab="ts">TypeScript</button>
-                    <button class="sdk-tab" data-tab="rust">Rust</button>
-                </div>
-
-                <div class="code-window sdk-panel active" data-panel="go">
-                    <div class="code-window-header">
-                        <div class="code-window-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span class="code-window-title">main.go</span>
-                    </div>
-                    <pre class="code-window-content"><code><span class="code-keyword">package</span> main
-
-<span class="code-keyword">import</span> (
-    <span class="code-string">"context"</span>
-    <span class="code-string">"fmt"</span>
-    <span class="code-string">"log"</span>
-
-    <span class="code-string">"github.com/mem9-ai/drive9/pkg/client"</span>
-)
-
-<span class="code-keyword">func</span> <span class="code-function">main</span>() {
-    ctx := context.Background()
-
-    <span class="code-comment">// Create client</span>
-    c := client.New(<span class="code-string">"http://localhost:9009"</span>, <span class="code-string">""</span>)
-
-    <span class="code-comment">// Write file</span>
-    err := c.Write(ctx, <span class="code-string">"/data/hello.txt"</span>, []byte(<span class="code-string">"Hello, drive9!"</span>))
-    <span class="code-keyword">if</span> err != <span class="code-keyword">nil</span> {
-        log.Fatal(err)
-    }
-
-    <span class="code-comment">// Read file</span>
-    data, err := c.Read(ctx, <span class="code-string">"/data/hello.txt"</span>)
-    <span class="code-keyword">if</span> err != <span class="code-keyword">nil</span> {
-        log.Fatal(err)
-    }
-    fmt.Println(<span class="code-keyword">string</span>(data))
-
-    <span class="code-comment">// List directory</span>
-    entries, err := c.List(ctx, <span class="code-string">"/data/"</span>)
-    <span class="code-keyword">if</span> err != <span class="code-keyword">nil</span> {
-        log.Fatal(err)
-    }
-    <span class="code-keyword">for</span> _, e := <span class="code-keyword">range</span> entries {
-        fmt.Println(e.Name, e.Size, e.ModTime)
-    }
-
-    <span class="code-comment">// Zero-copy link</span>
-    err = c.Copy(ctx, <span class="code-string">"/data/hello.txt"</span>, <span class="code-string">"/backup/hello.txt"</span>)
-    <span class="code-keyword">if</span> err != <span class="code-keyword">nil</span> {
-        log.Fatal(err)
-    }
-}</code></pre>
-                </div>
-
-                <div class="code-window sdk-panel" data-panel="python">
-                    <div class="code-window-header">
-                        <div class="code-window-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span class="code-window-title">main.py</span>
-                    </div>
-                    <pre class="code-window-content"><code><span class="code-keyword">from</span> drive9 <span class="code-keyword">import</span> Client
-
-<span class="code-comment"># Create client</span>
-c = Client(<span class="code-string">"http://localhost:9009"</span>, api_key=<span class="code-string">""</span>)
-
-<span class="code-comment"># Write file</span>
-c.write(<span class="code-string">"/data/hello.txt"</span>, <span class="code-string">b"Hello, drive9!"</span>)
-
-<span class="code-comment"># Read file</span>
-data = c.read(<span class="code-string">"/data/hello.txt"</span>)
-<span class="code-keyword">print</span>(data.decode(<span class="code-string">"utf-8"</span>))
-
-<span class="code-comment"># List directory</span>
-entries = c.list(<span class="code-string">"/data/"</span>)
-<span class="code-keyword">for</span> e <span class="code-keyword">in</span> entries:
-    <span class="code-keyword">print</span>(e.name, e.size, e.mtime)
-
-<span class="code-comment"># Zero-copy link</span>
-c.copy(<span class="code-string">"/data/hello.txt"</span>, <span class="code-string">"/backup/hello.txt"</span>)
-
-<span class="code-comment"># Stream upload</span>
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">"large.bin"</span>, <span class="code-string">"rb"</span>) <span class="code-keyword">as</span> f:
-    c.write_stream(<span class="code-string">"/data/large.bin"</span>, f, size=<span class="code-number">1024</span>*<span class="code-number">1024</span>)</code></pre>
-                </div>
-
-                <div class="code-window sdk-panel" data-panel="ts">
-                    <div class="code-window-header">
-                        <div class="code-window-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span class="code-window-title">main.ts</span>
-                    </div>
-                    <pre class="code-window-content"><code><span class="code-keyword">import</span> { Client } <span class="code-keyword">from</span> <span class="code-string">"drive9"</span>;
-
-<span class="code-keyword">async function</span> <span class="code-function">main</span>() {
-    <span class="code-comment">// Create client</span>
-    <span class="code-keyword">const</span> c = <span class="code-keyword">new</span> Client(<span class="code-string">"http://localhost:9009"</span>, <span class="code-string">""</span>);
-
-    <span class="code-comment">// Write file</span>
-    <span class="code-keyword">await</span> c.write(<span class="code-string">"/data/hello.txt"</span>, <span class="code-keyword">new</span> TextEncoder().encode(<span class="code-string">"Hello, drive9!"</span>));
-
-    <span class="code-comment">// Read file</span>
-    <span class="code-keyword">const</span> data = <span class="code-keyword">await</span> c.read(<span class="code-string">"/data/hello.txt"</span>);
-    console.log(<span class="code-keyword">new</span> TextDecoder().decode(data));
-
-    <span class="code-comment">// List directory</span>
-    <span class="code-keyword">const</span> entries = <span class="code-keyword">await</span> c.list(<span class="code-string">"/data/"</span>);
-    <span class="code-keyword">for</span> (<span class="code-keyword">const</span> e <span class="code-keyword">of</span> entries) {
-        console.log(e.name, e.size, e.mtime);
-    }
-
-    <span class="code-comment">// Zero-copy link</span>
-    <span class="code-keyword">await</span> c.copy(<span class="code-string">"/data/hello.txt"</span>, <span class="code-string">"/backup/hello.txt"</span>);
-
-    <span class="code-comment">// Stream upload</span>
-    <span class="code-keyword">const</span> stream = await Deno.open(<span class="code-string">"large.bin"</span>);
-    <span class="code-keyword">await</span> c.writeStream(<span class="code-string">"/data/large.bin"</span>, stream.readable, size);
-}
-
-main();</code></pre>
-                </div>
-
-                <div class="code-window sdk-panel" data-panel="rust">
-                    <div class="code-window-header">
-                        <div class="code-window-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <span class="code-window-title">main.rs</span>
-                    </div>
-                    <pre class="code-window-content"><code><span class="code-keyword">use</span> drive9::Client;
-
-#[tokio::main]
-<span class="code-keyword">async fn</span> <span class="code-function">main</span>() -> Result&lt;(), drive9::Drive9Error&gt; {
-    <span class="code-comment">// Create client</span>
-    <span class="code-keyword">let</span> c = Client::new(<span class="code-string">"http://localhost:9009"</span>, <span class="code-string">""</span>);
-
-    <span class="code-comment">// Write file</span>
-    c.write(<span class="code-string">"/data/hello.txt"</span>, <span class="code-string">b"Hello, drive9!"</span>).<span class="code-keyword">await</span>?;
-
-    <span class="code-comment">// Read file</span>
-    <span class="code-keyword">let</span> data = c.read(<span class="code-string">"/data/hello.txt"</span>).<span class="code-keyword">await</span>?;
-    println!(<span class="code-string">"{}"</span>, String::from_utf8_lossy(&data));
-
-    <span class="code-comment">// List directory</span>
-    <span class="code-keyword">let</span> entries = c.list(<span class="code-string">"/data/"</span>).<span class="code-keyword">await</span>?;
-    <span class="code-keyword">for</span> e <span class="code-keyword">in</span> entries {
-        println!(<span class="code-string">"{} {} {:?}"</span>, e.name, e.size, e.mtime);
-    }
-
-    <span class="code-comment">// Zero-copy link</span>
-    c.copy(<span class="code-string">"/data/hello.txt"</span>, <span class="code-string">"/backup/hello.txt"</span>).<span class="code-keyword">await</span>?;
-
-    <span class="code-comment">// Stream upload</span>
-    <span class="code-keyword">let</span> file = tokio::fs::File::open(<span class="code-string">"large.bin"</span>).<span class="code-keyword">await</span>?;
-    c.write_stream(<span class="code-string">"/data/large.bin"</span>, file, size).<span class="code-keyword">await</span>?;
-
-    Ok(())
-}</code></pre>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="cta-title">Start building in seconds</h2>
-            <p class="cta-subtitle">One command to install. One command to start. Zero config.</p>
-            
-            <div class="cli-box cta-cli">
-                <div class="cli-header">
-                    <span class="cli-label">Install</span>
-                    <button class="cli-copy" onclick="copyToClipboard(this)">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                    </button>
-                </div>
-                <code class="cli-code">$ curl -fsSL https://drive9.ai/install.sh | sh</code>
-            </div>
-
-            <div class="cta-links">
-                <a href="https://github.com/mem9-ai/drive9" target="_blank" class="cta-button primary">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    View on GitHub
-                </a>
-                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" class="cta-button secondary">
-                    Read Docs
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <a href="#" class="logo">
-                        <span class="logo-icon">◆</span>
-                        <span class="logo-text">drive9</span>
-                    </a>
-                    <p class="footer-tagline">Agent workspace for files, secrets, and retrieval.</p>
-
-                </div>
-                <div class="footer-links">
-                    <h4>Resources</h4>
-                    <a href="https://github.com/mem9-ai/drive9" target="_blank">GitHub</a>
-                    <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank">Documentation</a>
-                    <a href="skill.md">Skill File</a>
-                </div>
-                <div class="footer-links">
-                    <h4>Community</h4>
-                    <a href="https://github.com/mem9-ai/drive9/issues" target="_blank">Issues</a>
-                    <a href="https://github.com/mem9-ai/drive9/discussions" target="_blank">Discussions</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Apache 2.0 License. Built for AI agents.</p>
-            </div>
-        </div>
-    </footer>
-
+        </section>
+
+        <section class="human" aria-label="For you">
+            <p class="human-label">For you</p>
+
+            <section class="trust" aria-label="Security">
+                <p><strong>Security</strong> Encrypted in transit. Tenant-isolated. Access-controlled.</p>
+                <a href="/security.html">Details</a>
+            </section>
+
+            <section class="setup" aria-label="Install">
+                <p>Install</p>
+                <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
+                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
+            </section>
+        </section>
+
+        <footer>
+            <div class="footer-brand">drive9</div>
+            <nav class="footer-links" aria-label="Footer">
+                <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+                <span class="footer-sep">/</span>
+                <a href="/security.html">Security</a>
+                <span class="footer-sep">/</span>
+                <a href="/faq.html">FAQ</a>
+                <span class="footer-sep">/</span>
+                <a href="/sdk.html">SDK</a>
+            </nav>
+            <a class="powered-by" href="https://www.pingcap.com?utm_source=drive9&utm_medium=referral" target="_blank" rel="noreferrer">Powered by TiDB Cloud <img src="/tidb-logo.svg" alt="TiDB Cloud" width="20" height="23"></a>
+            <p class="footer-tagline">drive9.ai. Unlimited storage for AI agents.</p>
+        </footer>
+    </main>
     <script>
-        function copyToClipboard(button) {
-            const code = button.closest('.cli-box').querySelector('.cli-code').textContent;
-            const cleanCode = code.replace(/^\$\s*/, '');
-            navigator.clipboard.writeText(cleanCode).then(() => {
-                const original = button.innerHTML;
-                button.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                setTimeout(() => {
-                    button.innerHTML = original;
-                }, 2000);
-            });
-        }
+        (() => {
+            const instruction = document.querySelector('.instruction');
+            if (!instruction) return;
 
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const originalLabel = instruction.getAttribute('aria-label') || 'Copy agent instruction';
+            const copiedLabel = 'Agent instruction copied';
+            const text = instruction.dataset.copyText || instruction.textContent.trim();
+            let resetTimer;
+
+            const setCopiedState = () => {
+                instruction.dataset.copied = 'true';
+                instruction.setAttribute('aria-label', copiedLabel);
+                window.clearTimeout(resetTimer);
+                resetTimer = window.setTimeout(() => {
+                    delete instruction.dataset.copied;
+                    instruction.setAttribute('aria-label', originalLabel);
+                }, 1500);
+            };
+
+            const fallbackCopy = (value) => {
+                const input = document.createElement('textarea');
+                input.value = value;
+                input.setAttribute('readonly', '');
+                input.style.position = 'fixed';
+                input.style.opacity = '0';
+                input.style.pointerEvents = 'none';
+                document.body.appendChild(input);
+                input.select();
+                input.setSelectionRange(0, input.value.length);
+                const copied = document.execCommand('copy');
+                document.body.removeChild(input);
+                return copied;
+            };
+
+            const copyInstruction = async () => {
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                    } else if (!fallbackCopy(text)) {
+                        return;
+                    }
+                    setCopiedState();
+                } catch (_error) {
+                    if (fallbackCopy(text)) {
+                        setCopiedState();
+                    }
+                }
+            };
+
+            instruction.addEventListener('click', copyInstruction);
+            instruction.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    copyInstruction();
                 }
             });
-        });
-
-        // Add glow effect to feature cards on mouse move
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-
-        // SDK tabs
-        document.querySelectorAll('.sdk-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const target = tab.dataset.tab;
-                document.querySelectorAll('.sdk-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.sdk-panel').forEach(p => p.classList.remove('active'));
-                tab.classList.add('active');
-                document.querySelector(`.sdk-panel[data-panel="${target}"]`).classList.add('active');
-            });
-        });
+        })();
     </script>
 </body>
 </html>

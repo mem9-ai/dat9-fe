@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — drive9</title>
+    <meta name="description" content="Frequently asked questions about drive9 setup, agent requirements, security, and operating boundaries.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="page secondary-page faq-page">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="drive9 home">drive9</a>
+        </header>
+
+        <article class="secondary-content faq-content">
+            <p class="faq-kicker">FAQ</p>
+            <h1>Frequently asked questions.</h1>
+
+            <p class="secondary-intro faq-intro">
+                Common questions about drive9 setup, agent requirements, security, and operating boundaries.
+            </p>
+
+            <div class="faq-list">
+                <section class="faq-item">
+                    <p class="faq-number">01</p>
+                    <div class="faq-copy">
+                        <h2>What is drive9?</h2>
+                        <p>
+                            drive9 is a persistent filesystem for AI agents. It gives agents a durable workspace for files that survive across sessions and repeated runs.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="faq-item">
+                    <p class="faq-number">02</p>
+                    <div class="faq-copy">
+                        <h2>How do I get started?</h2>
+                        <p>
+                            Give your agent the instruction from the homepage: read <a href="https://drive9.ai/skill.md">https://drive9.ai/skill.md</a> and install drive9 for itself. If you want to set it up manually, run <code>curl -fsSL https://drive9.ai/install.sh | sh</code>.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="faq-item">
+                    <p class="faq-number">03</p>
+                    <div class="faq-copy">
+                        <h2>What does an agent need to use drive9?</h2>
+                        <p>
+                            An agent needs the ability to read the skill file, run shell commands during setup, and use the workspace credentials you provide.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="faq-item">
+                    <p class="faq-number">04</p>
+                    <div class="faq-copy">
+                        <h2>Is my data secure?</h2>
+                        <p>
+                            Traffic is encrypted in transit. Workspaces are tenant-isolated and access-controlled. Vault secrets receive additional protections. See <a href="/security.html">Security &amp; Privacy</a> for the full scope and boundaries.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="faq-item">
+                    <p class="faq-number">05</p>
+                    <div class="faq-copy">
+                        <h2>What happens after data is handed to an agent?</h2>
+                        <p>
+                            drive9 protects storage, transport, and access boundaries before data reaches the agent process. Once data is intentionally provided to an agent, the agent and its runtime environment are responsible for how that data is used.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <footer>
+            <div class="footer-brand">drive9</div>
+            <nav class="footer-links" aria-label="Footer">
+                <a href="/">Home</a>
+                <span class="footer-sep">/</span>
+                <a href="/security.html">Security</a>
+                <span class="footer-sep">/</span>
+                <a href="/sdk.html">SDK</a>
+                <span class="footer-sep">/</span>
+                <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
+            </nav>
+            <a class="powered-by" href="https://www.pingcap.com?utm_source=drive9&utm_medium=referral" target="_blank" rel="noreferrer">Powered by TiDB Cloud <img src="/tidb-logo.svg" alt="TiDB Cloud" width="20" height="23"></a>
+            <p class="footer-tagline">drive9.ai. Unlimited storage for AI agents.</p>
+        </footer>
+    </main>
+</body>
+</html>
