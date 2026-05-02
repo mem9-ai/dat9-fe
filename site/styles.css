@@ -140,14 +140,6 @@ h1 {
     opacity: 1;
 }
 
-.subcopy {
-    max-width: 520px;
-    color: var(--muted);
-    font-size: 17px;
-    line-height: 1.6;
-    letter-spacing: -0.01em;
-}
-
 /* ---- Setup strip ---- */
 
 .setup {
