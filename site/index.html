@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>drive9 — filesystem for AI agents</title>
-    <meta name="description" content="drive9 gives AI agents one shared remote filesystem. Mount it once, then agents read, write, and hand off files through normal paths.">
+    <title>drive9 — filesystem skill for AI agents</title>
+    <meta name="description" content="drive9 gives AI agents a filesystem skill. Humans set up the workspace with CLI; agents use the skill to read, write, search, and hand off files.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,7 +14,8 @@
             <span class="brand-name">drive9</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
-            <a href="#install">Install</a>
+            <a href="#skill">Agent skill</a>
+            <a href="#setup">Setup once</a>
             <a href="#use-case">Core use case</a>
             <a href="#built-on-top">Built on top</a>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
@@ -24,37 +25,88 @@
     <main>
         <section class="hero">
             <div class="hero-copy">
-                <p class="eyebrow">Filesystem for AI agents</p>
-                <h1>One filesystem for every agent.</h1>
+                <p class="eyebrow">Filesystem skill for AI agents</p>
+                <h1>Give agents a filesystem skill.</h1>
                 <p class="hero-subtitle">
-                    Mount a shared remote workspace into Claude Code, Codex, and your own agents.
-                    They read, write, and hand off files through the same paths.
+                    Agents read <code>skill.md</code>. The skill gives them commands and paths for
+                    a shared workspace: store files, search files, and hand off artifacts.
                 </p>
                 <div class="hero-actions">
-                    <a href="#install" class="button primary">Install drive9</a>
-                    <a href="#use-case" class="button secondary">See the core use case</a>
+                    <a href="#skill" class="button primary">See the agent skill</a>
+                    <a href="#setup" class="button secondary">Set it up once</a>
                 </div>
             </div>
 
-            <div class="terminal-card" aria-label="Shared agent workspace">
+            <div class="terminal-card" aria-label="drive9 skill excerpt">
                 <div class="terminal-bar">
                     <span></span><span></span><span></span>
                 </div>
-                <pre><code>~/drive9-skills/
-├── review-checklist.md
-├── deploy-runbook.md
-└── artifacts/
+                <pre><code># drive9 skill excerpt
+Remote paths start with :/
 
-Claude Code writes.
-Codex reads the same path.</code></pre>
-                <p>The product is the shared filesystem. Everything else is built on that.</p>
+- list:   drive9 fs ls :/
+- read:   drive9 fs cat :/path
+- write:  drive9 fs cp ./file :/path
+- search: drive9 fs grep "query" /
+
+Use drive9 when files must survive the current session.</code></pre>
+                <p>For agents, drive9 is a skill contract: what commands exist and when to use them.</p>
             </div>
         </section>
 
-        <section class="section compact install" id="install">
+        <section class="section compact" id="skill">
             <div class="section-heading">
-                <p class="eyebrow">Get started</p>
-                <h2>Mount the first workspace.</h2>
+                <p class="eyebrow">Agent interface</p>
+                <h2>The skill is the agent-facing interface.</h2>
+                <p>
+                    The page should not ask an agent to understand setup. The skill tells the agent
+                    which file operations are available, which commands to run, and when drive9 is
+                    the right storage layer.
+                </p>
+            </div>
+            <div class="steps">
+                <article>
+                    <span class="step-number">01</span>
+                    <h3>Read the skill</h3>
+                    <p>The agent learns the drive9 contract: commands, paths, and when to persist files.</p>
+                </article>
+                <article>
+                    <span class="step-number">02</span>
+                    <h3>Use the commands</h3>
+                    <p>The skill includes CLI commands such as <code>fs cp</code>, <code>fs cat</code>, <code>fs ls</code>, and <code>fs grep</code>.</p>
+                </article>
+                <article>
+                    <span class="step-number">03</span>
+                    <h3>Hand off files</h3>
+                    <p>Another agent with the same skill can continue from the same workspace.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section scenario" id="use-case">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Core use case</p>
+                <h2>Claude Code learns the skill. Codex uses the same workspace.</h2>
+            </div>
+            <div class="before-after">
+                <article>
+                    <p class="card-label">Before</p>
+                    <h3>Each agent keeps files in its own context.</h3>
+                    <p>Skills, artifacts, and working state stay trapped in tool-specific local folders or session memory.</p>
+                </article>
+                <article class="after">
+                    <p class="card-label">After</p>
+                    <h3>Agents share one filesystem skill.</h3>
+                    <p>The skill tells agents how to use the workspace. One agent writes an artifact; the next agent reads it from the same path.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section install" id="setup">
+            <div class="section-heading narrow">
+                <p class="eyebrow">Setup once</p>
+                <h2>A human wires the filesystem in.</h2>
+                <p>CLI setup prepares the workspace that the skill refers to. It is not the agent-facing product story.</p>
             </div>
             <div class="install-card">
                 <pre><code>$ curl -fsSL https://drive9.ai/install.sh | sh
@@ -70,42 +122,23 @@ $ drive9 mount :/skills ~/drive9-skills</code></pre>
             </div>
         </section>
 
-        <section class="section scenario" id="use-case">
-            <div class="section-heading narrow">
-                <p class="eyebrow">Core use case</p>
-                <h2>Claude Code writes. Codex reads. No sync glue.</h2>
-            </div>
-            <div class="before-after">
-                <article>
-                    <p class="card-label">Before</p>
-                    <h3>Files stay trapped inside one tool.</h3>
-                    <p>Skills, artifacts, and working state land in tool-specific local folders. Sharing means copy scripts, env vars, or manual handoff.</p>
-                </article>
-                <article class="after">
-                    <p class="card-label">After</p>
-                    <h3>Agents share one remote namespace.</h3>
-                    <p>Mount <code>:/skills</code> into each agent environment. One agent writes a file; the next agent reads the same path.</p>
-                </article>
-            </div>
-        </section>
-
         <section class="section built-on-top" id="built-on-top">
             <div class="section-heading narrow">
                 <p class="eyebrow">Built on top</p>
-                <h2>Search and organize, built on the agent filesystem.</h2>
+                <h2>Search and organize, built on the agent filesystem skill.</h2>
                 <p>
-                    First, agents share files. Then supported files can be indexed so people,
-                    apps, and agents search what the workspace produces.
+                    First, agents get a filesystem skill. Then supported files can be indexed so
+                    people, apps, and agents search what the workspace produces.
                 </p>
             </div>
             <div class="solution-row">
                 <article>
                     <h3>Team knowledge workspace</h3>
-                    <p>Put docs and runbooks where agents can mount them. Search supported content with <code>drive9 fs grep</code>.</p>
+                    <p>Put docs and runbooks in the workspace. Agents discover them through the skill; humans can search supported content.</p>
                 </article>
                 <article>
                     <h3>Searchable asset library</h3>
-                    <p>Use the same filesystem as storage substrate; add search over supported files when the product needs it.</p>
+                    <p>Use the same filesystem as the storage substrate; add search over supported files when the product needs it.</p>
                 </article>
             </div>
         </section>
@@ -118,7 +151,7 @@ $ drive9 mount :/skills ~/drive9-skills</code></pre>
             <div class="detail-list">
                 <details>
                     <summary>Is drive9 a cloud drive?</summary>
-                    <p>It is a filesystem layer for agents first. Human-facing search and knowledge workflows are built on that layer.</p>
+                    <p>It is a filesystem skill and workspace for agents first. Human-facing search and knowledge workflows are built on that layer.</p>
                 </details>
                 <details>
                     <summary>How is it different from S3?</summary>
@@ -126,14 +159,14 @@ $ drive9 mount :/skills ~/drive9-skills</code></pre>
                 </details>
                 <details>
                     <summary>How is search handled?</summary>
-                    <p>Search is an upper-layer workflow over supported files in the workspace, not the first thing agents need to understand.</p>
+                    <p>Search is an upper-layer workflow over supported files in the workspace. The first thing agents need is the filesystem skill.</p>
                 </details>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>drive9 — filesystem for AI agents</p>
+        <p>drive9 — filesystem skill for AI agents</p>
         <div>
             <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
