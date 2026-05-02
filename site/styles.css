@@ -143,13 +143,33 @@ h1 {
 /* ---- Trust and setup strips ---- */
 
 .trust {
-    padding: 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 0;
     border-top: 1px solid var(--line);
     color: var(--muted);
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: 0.01em;
 }
+
+.trust strong {
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.trust a {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.trust a:hover { opacity: 0.5; }
 
 .setup {
     display: flex;
@@ -212,6 +232,8 @@ footer a:hover { opacity: 0.5; }
     h1 { font-size: 48px; margin-bottom: 36px; }
     .instruction { padding: 24px; }
     .instruction::after { display: none; }
+    .trust { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .trust a { margin-left: 0; }
     .setup { flex-direction: column; align-items: flex-start; gap: 12px; }
     .setup a { margin-left: 0; }
 }
