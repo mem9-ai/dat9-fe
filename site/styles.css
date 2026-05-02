@@ -81,13 +81,27 @@ a:hover { opacity: 0.6; }
 }
 
 h1 {
-    max-width: 14ch;
+    max-width: 20ch;
     margin-bottom: 20px;
     font-size: clamp(44px, 6vw, 68px);
     font-weight: 700;
     line-height: 0.95;
     letter-spacing: -0.045em;
     color: var(--ink);
+}
+
+.hero h1 {
+    background: linear-gradient(135deg, #111 0%, #555 40%, #111 60%, #888 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .subcopy {
@@ -266,17 +280,70 @@ h1 {
 
 footer {
     display: flex;
-    gap: 24px;
-    padding: 20px 0 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 0 48px;
     border-top: 1px solid var(--line);
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.footer-links a { color: var(--muted); }
+.footer-links a:hover { opacity: 0.5; }
+
+.footer-sep {
+    color: var(--faint);
+    font-weight: 400;
+}
+
+.powered-by {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    transition: border-color 0.2s;
+}
+
+.powered-by img {
+    display: block;
+}
+
+.powered-by:hover {
+    border-color: #ccc5ba;
+    opacity: 1;
+}
+
+.footer-tagline {
+    font-size: 13px;
+    font-weight: 400;
     color: var(--faint);
     letter-spacing: 0.01em;
 }
-
-footer a { color: var(--muted); }
-footer a:hover { opacity: 0.5; }
 
 /* ---- Secondary pages ---- */
 
