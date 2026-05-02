@@ -109,8 +109,7 @@ h1 {
     line-height: 1.6;
     letter-spacing: -0.02em;
     color: var(--ink);
-    cursor: text;
-    user-select: all;
+    cursor: pointer;
     transition: box-shadow 0.3s, border-color 0.3s;
 }
 
@@ -122,7 +121,7 @@ h1 {
 }
 
 .instruction::after {
-    content: 'click to select';
+    content: 'click to copy';
     position: absolute;
     top: 12px;
     right: 16px;
@@ -138,6 +137,12 @@ h1 {
 
 .instruction:hover::after {
     opacity: 1;
+}
+
+.instruction[data-copied]::after {
+    content: 'copied';
+    opacity: 1;
+    color: var(--ink);
 }
 
 /* ---- Human-facing resources ---- */
