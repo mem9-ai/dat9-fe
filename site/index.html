@@ -5,15 +5,599 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drive9 — persistent filesystem for AI agents</title>
     <meta name="description" content="Unlimited storage for AI agents. Files persist across sessions, tools, and machines.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+
+:root {
+    color-scheme: dark;
+    --bg: #0a0908;
+    --ink: #ede8e0;
+    --muted: #918c85;
+    --faint: #48443f;
+    --line: #1f1d1a;
+    --paper: #131210;
+    --warm: #1a1816;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+a:hover { opacity: 0.6; }
+
+/* ---- Layout ---- */
+
+.page {
+    width: min(920px, calc(100% - 64px));
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-top { min-height: 85vh; }
+
+/* ---- Topbar ---- */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.brand {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+/* ---- Hero ---- */
+
+.hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    padding: 0 0 48px;
+    position: relative;
+}
+
+.hero-glow {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(140,216,140,0.04) 0%, rgba(240,216,140,0.02) 40%, transparent 70%);
+    pointer-events: none;
+    filter: blur(60px);
+    z-index: -1;
+}
+
+.eyebrow {
+    margin-bottom: 28px;
+    color: var(--faint);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+h1 {
+    max-width: none;
+    margin-bottom: 20px;
+    font-size: clamp(44px, 6vw, 68px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    color: var(--ink);
+}
+
+.hero h1 {
+    background: linear-gradient(135deg, #ede8e0 0%, #918c85 40%, #ede8e0 60%, #48443f 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.subcopy {
+    max-width: 480px;
+    margin: 0 auto 48px;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+}
+
+.instruction-label {
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.instruction {
+    position: relative;
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto 40px;
+    padding: 32px 36px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    font-size: clamp(16px, 2vw, 21px);
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    cursor: pointer;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 8px 32px rgba(0,0,0,0.4);
+}
+.instruction:hover {
+    border-color: #3d3832;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2), 0 12px 48px rgba(0,0,0,0.5);
+}
+
+.instruction:focus-visible {
+    outline: 2px solid #b9b2a7;
+    outline-offset: 4px;
+}
+
+.instruction::after {
+    content: 'click to copy';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.instruction:hover::after { opacity: 1; }
+.instruction[data-copied]::after { content: 'copied'; opacity: 1; color: var(--ink); }
+
+/* ════════════════════════════════════════ */
+/* ---- Demo animation (contained) ----    */
+/* ════════════════════════════════════════ */
+
+.demo-section {
+    padding-top: 80px;
+    padding-bottom: 96px;
+}
+
+.demo-label {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--faint);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.demo-container {
+    position: relative;
+    height: 500px;
+    max-width: 780px;
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--paper) 0%, rgba(15,14,12,1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15), 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.demo-ambient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.demo-ambient::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(126,200,126,0.04) 0%, transparent 70%);
+    transition: opacity 1.5s, background 2s;
+    opacity: 0;
+}
+.demo-ambient.glow::before { opacity: 1; }
+.demo-ambient.warm::before {
+    background: radial-gradient(circle, rgba(232,208,126,0.05) 0%, transparent 70%);
+}
+
+.demo-hl {
+    position: absolute;
+    width: min(580px, calc(100% - 48px));
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+}
+.demo-hl.v { opacity: 1; }
+
+.demo-hl h2 {
+    font-size: clamp(22px, 3.5vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+    max-width: none;
+    margin-bottom: 0;
+    color: var(--ink);
+    -webkit-text-fill-color: unset;
+    background: none;
+    animation: none;
+}
+
+.demo-hl .gr { color: #8dd88d; }
+.demo-hl .yl { color: #f0d88d; }
+.demo-hl .red { color: #e07070; }
+
+.demo-hl .demo-brand {
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.demo-agent-group {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: none;
+    opacity: 0;
+}
+.demo-agent-group.v { opacity: 1; }
+
+.demo-agent {
+    width: min(480px, 100%);
+    text-align: center;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.demo-agent.v { opacity: 1; transform: none; }
+
+.demo-agent .agent-name {
+    font-size: clamp(18px, 2.8vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+}
+.demo-agent .agent-sub {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--faint);
+    margin-top: 5px;
+}
+
+.demo-tw {
+    width: min(500px, 100%);
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: auto;
+}
+.demo-tw.v { opacity: 1; transform: none; }
+
+.demo-term {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.demo-term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 12px 16px;
+    background: var(--warm);
+    border-bottom: 1px solid var(--line);
+}
+
+.demo-dot { width: 9px; height: 9px; border-radius: 50%; }
+.demo-dot:nth-child(1) { background: #c75050; opacity: 0.4; }
+.demo-dot:nth-child(2) { background: #c7a850; opacity: 0.4; }
+.demo-dot:nth-child(3) { background: #50c750; opacity: 0.4; }
+
+.demo-term-title {
+    flex: 1; text-align: center;
+    font-size: 11px; font-weight: 500; color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.demo-term-body {
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; line-height: 1.85;
+}
+
+.demo-term-body .dln {
+    opacity: 0;
+    transform: translateY(3px);
+    transition: opacity 0.35s, transform 0.35s;
+    min-height: 1.85em;
+    white-space: pre-wrap;
+}
+.demo-term-body .dln.v { opacity: 1; transform: none; }
+
+.demo-term-body .dln.glow-line {
+    text-shadow: 0 0 20px rgba(141,216,141,0.25);
+}
+.demo-term-body .dln.glow-yellow {
+    text-shadow: 0 0 20px rgba(240,216,141,0.25);
+}
+
+.dpr { color: var(--muted); }
+.dcm { color: var(--ink); font-weight: 500; }
+.dg { color: #8dd88d; }
+.db { color: #8dc4f0; }
+.dy { color: #f0d88d; }
+
+.demo-replay {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    padding: 7px 20px; border: 1px solid var(--line); border-radius: 8px;
+    background: transparent; color: var(--faint);
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    opacity: 0; transition: opacity 0.5s;
+    z-index: 10;
+}
+.demo-replay.v { opacity: 1; }
+.demo-replay:hover { border-color: var(--muted); color: var(--muted); }
+
+/* ---- Human-facing resources ---- */
+
+.human { padding-top: 80px; }
+
+.human-label {
+    padding-bottom: 24px;
+    color: var(--faint);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.human-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.human-card {
+    padding: 28px 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.human-card:hover {
+    border-color: #2a2520;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.human-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.human-card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.human-card code {
+    display: block;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--warm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    color: var(--ink);
+    user-select: all;
+    margin-bottom: 12px;
+}
+
+.human-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+.human-card-link:hover { color: var(--ink); opacity: 1; }
+.human-card-link::after {
+    content: '\2192';
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.human-card-link:hover::after { transform: translateX(3px); }
+
+/* ---- Final CTA ---- */
+
+.cta-final {
+    text-align: center;
+    padding: 80px 0 64px;
+}
+
+.cta-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 16px;
+}
+
+.cta-sub {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 32px;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.cta-btn:hover {
+    border-color: #3d3832;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    background: var(--warm);
+    opacity: 1;
+}
+
+/* ---- Footer ---- */
+
+footer {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 20px;
+    padding: 64px 0 48px;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 18px; font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+}
+
+.footer-links {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; font-weight: 500;
+    color: var(--muted);
+}
+.footer-links a { color: var(--muted); }
+.footer-sep { color: var(--faint); font-weight: 400; }
+
+.powered-by {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    color: var(--muted);
+    transition: border-color 0.2s;
+}
+.powered-by svg { display: block; }
+.powered-by:hover { border-color: #3d3832; opacity: 1; }
+
+.footer-tagline {
+    font-size: 13px; font-weight: 400;
+    color: var(--faint);
+}
+
+/* ---- Scroll fade-in ---- */
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.fade-in.v {
+    opacity: 1;
+    transform: none;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 720px) {
+    .page { width: min(100% - 40px, 920px); }
+    .hero { padding: 20px 0 40px; }
+    h1 { font-size: 48px; margin-bottom: 36px; }
+    .instruction { padding: 24px; }
+    .instruction::after { display: none; }
+    .demo-container { height: 420px; }
+    .human-grid { grid-template-columns: 1fr; }
+    .human { padding-top: 48px; }
+}
+
+    </style>
 </head>
 <body>
-    <main class="page">
+    <div class="page page-top">
         <header class="topbar">
             <a class="brand" href="/" aria-label="drive9 home">drive9</a>
         </header>
 
         <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-glow"></div>
             <p class="eyebrow">For your agent</p>
             <h1 id="hero-title">Unlimited storage for AI agents.</h1>
             <p class="subcopy">Files persist across sessions, tools, and machines.</p>
@@ -22,23 +606,47 @@
                 <span>Read https://drive9.ai/skill.md and follow the instructions to install and configure drive9.</span>
             </div>
         </section>
+    </div>
 
-        <section class="human" aria-label="For you">
-            <p class="human-label">For you</p>
-
-            <section class="trust" aria-label="Security">
-                <p><strong>Security</strong> Encrypted in transit. Tenant-isolated. Access-controlled.</p>
-                <a href="/security.html">Details</a>
-            </section>
-
-            <section class="setup" aria-label="Install">
-                <p>Install</p>
-                <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
-                <a href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
-            </section>
+    <div class="page">
+        <!-- Demo animation (contained) -->
+        <section class="demo-section fade-in" aria-label="Demo">
+            <p class="demo-label">Never start from scratch</p>
+            <div class="demo-container">
+                <div class="demo-ambient" id="damb"></div>
+                <div class="demo-hl" id="dhl"><h2 id="dh2"></h2><div class="demo-brand" id="dhb" style="display:none"></div></div>
+                <div class="demo-agent-group" id="dag">
+                    <div class="demo-agent" id="dal"><div class="agent-name" id="dan"></div><div class="agent-sub" id="das"></div></div>
+                    <div class="demo-tw" id="dtw"><div class="demo-term"><div class="demo-term-bar"><span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-term-title" id="dtt"></span></div><div class="demo-term-body" id="dtb"></div></div></div>
+                </div>
+                <button class="demo-replay" id="drp">Replay</button>
+            </div>
         </section>
 
-        <footer>
+        <section class="human" aria-label="For you">
+            <p class="human-label fade-in">For you</p>
+            <div class="human-grid fade-in">
+                <div class="human-card">
+                    <p class="human-card-title">Security</p>
+                    <p class="human-card-desc">Encrypted in transit. Tenant-isolated. Access-controlled.</p>
+                    <a class="human-card-link" href="/security.html">Learn more</a>
+                </div>
+                <div class="human-card">
+                    <p class="human-card-title">Install</p>
+                    <p class="human-card-desc">One command to get started.</p>
+                    <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
+                    <a class="human-card-link" href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-final fade-in" aria-label="Get started">
+            <h2 class="cta-title">Ready to give your agents<br>persistent memory?</h2>
+            <p class="cta-sub">One line in your agent's prompt. That's it.</p>
+            <a class="cta-btn" href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">Get started</a>
+        </section>
+
+        <footer class="fade-in">
             <div class="footer-brand">drive9</div>
             <nav class="footer-links" aria-label="Footer">
                 <a href="https://github.com/mem9-ai/drive9" target="_blank" rel="noreferrer">GitHub</a>
@@ -49,68 +657,143 @@
                 <span class="footer-sep">/</span>
                 <a href="/sdk.html">SDK</a>
             </nav>
-            <a class="powered-by" href="https://www.pingcap.com?utm_source=drive9&utm_medium=referral" target="_blank" rel="noreferrer">Powered by TiDB Cloud <img src="/tidb-logo.svg" alt="TiDB Cloud" width="20" height="23"></a>
+            <a class="powered-by" href="https://www.pingcap.com?utm_source=drive9&utm_medium=referral" target="_blank" rel="noreferrer">Powered by TiDB Cloud <svg width="20" height="23" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M0 20.9695V7.03878C0 7.00961 0.0145871 6.98773 0.0364678 6.97314L12.0927 0.00778178C12.1146 -0.00680535 12.1438 -0.00680535 12.1657 0.00778178L24.2219 6.96585C24.2438 6.98043 24.2584 7.00231 24.2584 7.03149V20.9622C24.2584 20.9914 24.2438 21.0133 24.2219 21.0278L12.1657 27.9932C12.1438 28.0078 12.1146 28.0078 12.0927 27.9932L0.0364678 21.0278C0.0145871 21.0133 0 20.9914 0 20.9695Z" fill="#DC150B"/><path d="M8.07398 11.6928C8.06668 11.6855 8.0521 11.6782 8.0448 11.6855L4.0844 13.9757H4.06981C4.05522 13.9757 4.04793 13.9684 4.04793 13.9538V9.33699C4.04793 9.32969 4.05522 9.3224 4.06251 9.31511L12.1 4.6764C12.1073 4.66911 12.1146 4.66911 12.1219 4.6764L16.1188 6.98117L16.1261 6.98846C16.1334 6.99575 16.1261 7.01034 16.1188 7.01763L12.1146 9.32969C12.1073 9.33699 12.1 9.34428 12.1 9.35158V23.3042V23.3188C12.0927 23.326 12.0781 23.3333 12.0709 23.326L8.08127 21.0286C8.08127 21.0213 8.07398 21.014 8.07398 21.0067V11.7074V11.6928Z" fill="white"/><path d="M16.1771 20.9994C16.1625 20.9994 16.148 20.9848 16.148 20.9702V11.6928C16.148 11.6782 16.1552 11.6709 16.1625 11.6636L20.1667 9.35158C20.174 9.34428 20.174 9.34428 20.1813 9.34428C20.1959 9.34428 20.2105 9.35887 20.2105 9.37346V18.6509C20.2105 18.6655 20.2032 18.6728 20.1959 18.68L16.1917 20.9921C16.1844 20.9994 16.1844 20.9994 16.1771 20.9994Z" fill="white"/></g><defs><clipPath id="clip0"><rect width="24.2584" height="28" fill="white"/></clipPath></defs></svg></a>
             <p class="footer-tagline">drive9.ai. Unlimited storage for AI agents.</p>
         </footer>
-    </main>
+    </div>
+
+    <!-- Copy instruction -->
     <script>
-        (() => {
-            const instruction = document.querySelector('.instruction');
-            if (!instruction) return;
+    (() => {
+        const el = document.querySelector('.instruction');
+        if (!el) return;
+        const text = el.dataset.copyText || el.textContent.trim();
+        let t;
+        const done = () => { el.dataset.copied='true'; clearTimeout(t); t=setTimeout(()=>{delete el.dataset.copied},1500); };
+        const copy = async () => {
+            try {
+                if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+                else { const a=document.createElement('textarea'); a.value=text; a.style.cssText='position:fixed;opacity:0'; document.body.appendChild(a); a.select(); document.execCommand('copy'); document.body.removeChild(a); }
+                done();
+            } catch(_) {
+                const a=document.createElement('textarea'); a.value=text; a.style.cssText='position:fixed;opacity:0'; document.body.appendChild(a); a.select(); document.execCommand('copy'); document.body.removeChild(a); done();
+            }
+        };
+        el.addEventListener('click', copy);
+        el.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();copy()} });
+    })();
+    </script>
 
-            const originalLabel = instruction.getAttribute('aria-label') || 'Copy agent instruction';
-            const copiedLabel = 'Agent instruction copied';
-            const text = instruction.dataset.copyText || instruction.textContent.trim();
-            let resetTimer;
+    <!-- Scroll fade-in -->
+    <script>
+    (() => {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    })();
+    </script>
 
-            const setCopiedState = () => {
-                instruction.dataset.copied = 'true';
-                instruction.setAttribute('aria-label', copiedLabel);
-                window.clearTimeout(resetTimer);
-                resetTimer = window.setTimeout(() => {
-                    delete instruction.dataset.copied;
-                    instruction.setAttribute('aria-label', originalLabel);
-                }, 1500);
-            };
+    <!-- Demo animation -->
+    <script>
+    (() => {
+        const $=id=>document.getElementById(id);
+        const w=ms=>new Promise(r=>setTimeout(r,ms));
+        const dhl=$('dhl'),dh2=$('dh2'),dhb=$('dhb');
+        const dtw=$('dtw'),dtt=$('dtt'),dtb=$('dtb');
+        const dag=$('dag'),dal=$('dal'),dan=$('dan'),das=$('das');
+        const damb=$('damb'),drp=$('drp');
 
-            const fallbackCopy = (value) => {
-                const input = document.createElement('textarea');
-                input.value = value;
-                input.setAttribute('readonly', '');
-                input.style.position = 'fixed';
-                input.style.opacity = '0';
-                input.style.pointerEvents = 'none';
-                document.body.appendChild(input);
-                input.select();
-                input.setSelectionRange(0, input.value.length);
-                const copied = document.execCommand('copy');
-                document.body.removeChild(input);
-                return copied;
-            };
+        async function title(t,ms) {
+            dh2.innerHTML=t; dhb.style.display='none';
+            dhl.classList.add('v');
+            await w(ms||3000);
+            dhl.classList.remove('v');
+            await w(700);
+        }
 
-            const copyInstruction = async () => {
-                try {
-                    if (navigator.clipboard && window.isSecureContext) {
-                        await navigator.clipboard.writeText(text);
-                    } else if (!fallbackCopy(text)) {
-                        return;
-                    }
-                    setCopiedState();
-                } catch (_error) {
-                    if (fallbackCopy(text)) {
-                        setCopiedState();
-                    }
-                }
-            };
+        function ln(html,cls) {
+            const el=document.createElement('div');
+            el.className='dln'+(cls?' '+cls:'');
+            el.innerHTML=html;
+            dtb.appendChild(el);
+            requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('v')));
+        }
 
-            instruction.addEventListener('click', copyInstruction);
-            instruction.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    copyInstruction();
-                }
-            });
-        })();
+        async function agentTerm(name, sub, label, lines, ms) {
+            dag.classList.add('v');
+            dan.textContent=name; das.textContent=sub||'';
+            dal.classList.add('v');
+            await w(800);
+            dtb.innerHTML=''; dtt.textContent=label;
+            dtw.classList.add('v');
+            await w(400);
+            for (const item of lines) {
+                const text=typeof item==='string'?item:item[0];
+                const cls=typeof item==='string'?'':item[1];
+                ln(text,cls);
+                await w(text.startsWith('<span class="dpr">')?500:350);
+            }
+            await w(ms||2200);
+            dtw.classList.remove('v'); dal.classList.remove('v');
+            await w(600);
+            dag.classList.remove('v');
+        }
+
+        let started=false;
+        new IntersectionObserver(([e])=>{
+            if(e.isIntersecting&&!started){started=true;run()}
+        },{threshold:0.15}).observe(document.querySelector('.demo-container'));
+
+        async function run() {
+            dhl.classList.remove('v'); dtw.classList.remove('v');
+            dag.classList.remove('v'); dal.classList.remove('v'); drp.classList.remove('v');
+            dtb.innerHTML=''; damb.className='demo-ambient';
+            await w(600);
+
+            await title('Your agent spent 3 hours<br>on a security audit.',3000);
+            await title('You closed the terminal.<br><span class="red">It\u2019s gone.</span>',2800);
+            await title('<span class="gr">Not with drive9.</span>',2200);
+
+            damb.classList.add('glow');
+            await agentTerm('Claude Code','writes a skill','claude code',[
+                '<span class="dpr">$</span> <span class="dcm">drive9 fs cp audit.md :/skills/security-audit.md</span>',
+                ['<span class="dg">\u2713 stored</span>','glow-line'],
+            ],1800);
+
+            await agentTerm('Codex','different machine \u00B7 finds the skill instantly','codex',[
+                '<span class="dpr">$</span> <span class="dcm">drive9 fs grep "audit" :/</span>',
+                ['<span class="db">/skills/security-audit.md  0.03</span>',''],
+                '',
+                '<span class="dpr">$</span> <span class="dcm">drive9 fs cat :/skills/security-audit.md</span>',
+                ['<span class="dg">\u2713 found \u2014 applying to codebase</span>','glow-line'],
+            ],2400);
+            damb.classList.remove('glow');
+
+            await title('One agent writes the playbook.<br><span class="yl">Every agent runs it.</span>',3000);
+
+            damb.classList.add('glow','warm');
+            await agentTerm('OpenClaw','another machine \u00B7 mounts the workspace','openclaw',[
+                '<span class="dpr">$</span> <span class="dcm">drive9 mount ~/drive9</span>',
+                ['<span class="dg">\u2713 mounted</span>','glow-line'],
+                '',
+                '<span class="dpr">$</span> <span class="dcm">cat ~/drive9/skills/security-audit.md</span>',
+                ['<span class="dy">\u2713 skill loaded \u00B7 running audit</span>','glow-yellow'],
+                ['<span class="dg">\u2713 0 critical issues</span>','glow-line'],
+            ],2800);
+            damb.className='demo-ambient';
+
+            await w(600);
+            dh2.innerHTML='Three agents.<br><span class="yl">One workspace.</span>';
+            dhb.textContent='drive9'; dhb.style.display='';
+            dhl.classList.add('v');
+            damb.classList.add('glow');
+            await w(2500);
+            drp.classList.add('v');
+        }
+
+        drp.addEventListener('click',run);
+    })();
     </script>
 </body>
 </html>
