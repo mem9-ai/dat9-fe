@@ -401,11 +401,55 @@ h1 {
 .demo-replay.v { opacity: 1; }
 .demo-replay:hover { border-color: var(--muted); color: var(--muted); }
 
-/* ---- Human-facing resources ---- */
+/* ---- Shared card primitives ---- */
 
-.human { padding-top: 80px; }
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    border-color: #2a2520;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
 
-.human-label {
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+.card-link:hover { color: var(--ink); opacity: 1; }
+.card-link::after {
+    content: '\2192';
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.card-link:hover::after { transform: translateX(3px); }
+
+.section-label {
     padding-bottom: 24px;
     color: var(--faint);
     font-size: 11px; font-weight: 600;
@@ -414,7 +458,7 @@ h1 {
     text-align: center;
 }
 
-.human-grid {
+.section-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -422,33 +466,63 @@ h1 {
     margin: 0 auto;
 }
 
-.human-card {
-    padding: 28px 28px 24px;
+/* ---- Runtime showcase ---- */
+
+.runtime { padding-top: 80px; padding-bottom: 16px; }
+
+.runtime .card {
+    position: relative;
+    overflow: hidden;
+}
+.runtime .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(141,216,141,0.3) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.runtime .card:hover::before { opacity: 1; }
+
+.runtime .card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    margin-bottom: 14px;
     border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--paper);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.human-card:hover {
-    border-color: #2a2520;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.human-card-title {
+    border-radius: 8px;
+    background: var(--bg);
     font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
 }
 
-.human-card-desc {
-    font-size: 14px;
-    line-height: 1.6;
+.runtime .card code {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-left: 2px solid #2a2a2a;
+    border-radius: 8px;
+    background: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    line-height: 1.7;
     color: var(--muted);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    overflow-x: auto;
 }
+.runtime .card:hover code {
+    border-left-color: rgba(141,216,141,0.3);
+}
+.runtime .card code .rc-comment { color: var(--faint); }
+.runtime .card code .rc-cmd { color: var(--ink); font-weight: 500; }
+.runtime .card code .rc-ok { color: #8dd88d; }
 
-.human-card code {
+/* ---- Human-facing resources ---- */
+
+.human { padding-top: 80px; }
+
+.human .card code {
     display: block;
     padding: 10px 14px;
     border: 1px solid var(--line);
@@ -460,23 +534,6 @@ h1 {
     user-select: all;
     margin-bottom: 12px;
 }
-
-.human-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    transition: color 0.2s;
-}
-.human-card-link:hover { color: var(--ink); opacity: 1; }
-.human-card-link::after {
-    content: '\2192';
-    font-size: 14px;
-    transition: transform 0.2s;
-}
-.human-card-link:hover::after { transform: translateX(3px); }
 
 /* ---- Footer ---- */
 
@@ -544,7 +601,8 @@ footer {
     .instruction { padding: 24px; }
     .instruction::after { display: none; }
     .demo-container { height: 420px; }
-    .human-grid { grid-template-columns: 1fr; }
+    .section-grid { grid-template-columns: 1fr; }
+    .runtime { padding-top: 48px; }
     .human { padding-top: 48px; }
 }
 
@@ -583,19 +641,39 @@ footer {
             </div>
         </section>
 
-        <section class="human" aria-label="For you">
-            <p class="human-label fade-in">For you</p>
-            <div class="human-grid fade-in">
-                <div class="human-card">
-                    <p class="human-card-title">Security</p>
-                    <p class="human-card-desc">Encrypted in transit. Tenant-isolated. Access-controlled.</p>
-                    <a class="human-card-link" href="/security.html">Learn more</a>
+        <section class="runtime fade-in" aria-label="Any sandbox, one filesystem">
+            <p class="section-label">Any sandbox, one filesystem</p>
+            <div class="section-grid">
+                <div class="card">
+                    <div class="card-icon">☁️</div>
+                    <p class="card-title">E2B Cloud Sandboxes</p>
+                    <p class="card-desc">Sandboxes come and go. Files stay. One sandbox writes, another picks up where it left off.</p>
+                    <code><span class="rc-cmd">npm install &amp;&amp; npm run demo</span><br><br><span class="rc-comment"># Sandbox A writes to drive9</span><br><span class="rc-comment"># Sandbox A is destroyed</span><br><span class="rc-comment"># Sandbox B mounts drive9</span><br><span class="rc-ok">✓ handoff complete</span></code>
+                    <a class="card-link" href="https://github.com/drive9-ai/drive9-for-e2b" target="_blank" rel="noreferrer">View on GitHub</a>
                 </div>
-                <div class="human-card">
-                    <p class="human-card-title">Install</p>
-                    <p class="human-card-desc">One command to get started.</p>
+                <div class="card">
+                    <div class="card-icon">🔥</div>
+                    <p class="card-title">Firecracker MicroVMs</p>
+                    <p class="card-desc">Full FUSE mount inside a microVM. No sidecar, no agent — one command.</p>
+                    <code><span class="rc-cmd">export DRIVE9_API_KEY="dat9_..."</span><br><span class="rc-cmd">make demo</span><br><br><span class="rc-comment"># Boots VM, mounts drive9</span><br><span class="rc-comment"># Drops you into a shell</span><br><span class="rc-ok">✓ drive9 mounted at /mnt/drive9</span></code>
+                    <a class="card-link" href="https://github.com/drive9-ai/drive9-for-firecracker" target="_blank" rel="noreferrer">View on GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="human" aria-label="For you">
+            <p class="section-label fade-in">For you</p>
+            <div class="section-grid fade-in">
+                <div class="card">
+                    <p class="card-title">Security</p>
+                    <p class="card-desc">Encrypted in transit. Tenant-isolated. Access-controlled.</p>
+                    <a class="card-link" href="/security.html">Learn more</a>
+                </div>
+                <div class="card">
+                    <p class="card-title">Install</p>
+                    <p class="card-desc">One command to get started.</p>
                     <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
-                    <a class="human-card-link" href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
+                    <a class="card-link" href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
                 </div>
             </div>
         </section>
