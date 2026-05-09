@@ -403,6 +403,8 @@ h1 {
 /* ---- Shared card primitives ---- */
 
 .card {
+    display: flex;
+    flex-direction: column;
     padding: 28px 28px 24px;
     border: 1px solid var(--line);
     border-radius: 12px;
@@ -432,6 +434,7 @@ h1 {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    margin-top: auto;
     font-size: 13px;
     font-weight: 600;
     color: var(--muted);
@@ -468,6 +471,7 @@ h1 {
 
 .runtime .card code {
     display: block;
+    flex: 1;
     padding: 14px 16px;
     border: 1px solid var(--line);
     border-radius: 8px;
