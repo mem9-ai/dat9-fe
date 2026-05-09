@@ -400,11 +400,52 @@ h1 {
 .demo-replay.v { opacity: 1; }
 .demo-replay:hover { border-color: var(--muted); color: var(--muted); }
 
-/* ---- Runtime showcase ---- */
+/* ---- Shared card primitives ---- */
 
-.runtime { padding-top: 80px; padding-bottom: 16px; }
+.card {
+    padding: 28px 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    border-color: #2a2520;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
 
-.runtime-label {
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+.card-link:hover { color: var(--ink); opacity: 1; }
+.card-link::after {
+    content: '\2192';
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.card-link:hover::after { transform: translateX(3px); }
+
+.section-label {
     padding-bottom: 24px;
     color: var(--faint);
     font-size: 11px; font-weight: 600;
@@ -413,7 +454,7 @@ h1 {
     text-align: center;
 }
 
-.runtime-grid {
+.section-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -421,33 +462,11 @@ h1 {
     margin: 0 auto;
 }
 
-.runtime-card {
-    padding: 28px 28px 24px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--paper);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.runtime-card:hover {
-    border-color: #2a2520;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
+/* ---- Runtime showcase ---- */
 
-.runtime-card-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
-}
+.runtime { padding-top: 80px; padding-bottom: 16px; }
 
-.runtime-card-desc {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--muted);
-    margin-bottom: 16px;
-}
-
-.runtime-card code {
+.runtime .card code {
     display: block;
     padding: 14px 16px;
     border: 1px solid var(--line);
@@ -460,75 +479,15 @@ h1 {
     margin-bottom: 14px;
     overflow-x: auto;
 }
-.runtime-card code .rc-comment { color: var(--faint); }
-.runtime-card code .rc-cmd { color: var(--ink); font-weight: 500; }
-.runtime-card code .rc-ok { color: #8dd88d; }
-
-.runtime-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    transition: color 0.2s;
-}
-.runtime-card-link:hover { color: var(--ink); opacity: 1; }
-.runtime-card-link::after {
-    content: '\2192';
-    font-size: 14px;
-    transition: transform 0.2s;
-}
-.runtime-card-link:hover::after { transform: translateX(3px); }
+.runtime .card code .rc-comment { color: var(--faint); }
+.runtime .card code .rc-cmd { color: var(--ink); font-weight: 500; }
+.runtime .card code .rc-ok { color: #8dd88d; }
 
 /* ---- Human-facing resources ---- */
 
 .human { padding-top: 80px; }
 
-.human-label {
-    padding-bottom: 24px;
-    color: var(--faint);
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.human-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    max-width: 780px;
-    margin: 0 auto;
-}
-
-.human-card {
-    padding: 28px 28px 24px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--paper);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.human-card:hover {
-    border-color: #2a2520;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.human-card-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
-}
-
-.human-card-desc {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--muted);
-    margin-bottom: 16px;
-}
-
-.human-card code {
+.human .card code {
     display: block;
     padding: 10px 14px;
     border: 1px solid var(--line);
@@ -540,23 +499,6 @@ h1 {
     user-select: all;
     margin-bottom: 12px;
 }
-
-.human-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    transition: color 0.2s;
-}
-.human-card-link:hover { color: var(--ink); opacity: 1; }
-.human-card-link::after {
-    content: '\2192';
-    font-size: 14px;
-    transition: transform 0.2s;
-}
-.human-card-link:hover::after { transform: translateX(3px); }
 
 /* ---- Footer ---- */
 
@@ -624,9 +566,8 @@ footer {
     .instruction { padding: 24px; }
     .instruction::after { display: none; }
     .demo-container { height: 420px; }
-    .runtime-grid { grid-template-columns: 1fr; }
+    .section-grid { grid-template-columns: 1fr; }
     .runtime { padding-top: 48px; }
-    .human-grid { grid-template-columns: 1fr; }
     .human { padding-top: 48px; }
 }
 
@@ -666,36 +607,36 @@ footer {
         </section>
 
         <section class="runtime fade-in" aria-label="Any sandbox, one filesystem">
-            <p class="runtime-label">Any sandbox, one filesystem</p>
-            <div class="runtime-grid">
-                <div class="runtime-card">
-                    <p class="runtime-card-title">E2B Cloud Sandboxes</p>
-                    <p class="runtime-card-desc">Ephemeral sandboxes share a persistent workspace across lifetimes. Sandbox A writes, gets destroyed — Sandbox B mounts and picks up where it left off.</p>
-                    <code><span class="rc-comment"># Sandbox A — clone &amp; analyze</span><br><span class="rc-cmd">git clone repo /workspace/project</span><br><span class="rc-cmd">llm analyze &gt; /workspace/summary.md</span><br><span class="rc-ok">✓ stored on drive9</span><br><br><span class="rc-comment"># Sandbox B — picks up the work</span><br><span class="rc-cmd">cat /workspace/summary.md</span><br><span class="rc-ok">✓ found — answering questions</span></code>
-                    <a class="runtime-card-link" href="https://github.com/drive9-ai/drive9-for-e2b" target="_blank" rel="noreferrer">View on GitHub</a>
+            <p class="section-label">Any sandbox, one filesystem</p>
+            <div class="section-grid">
+                <div class="card">
+                    <p class="card-title">E2B Cloud Sandboxes</p>
+                    <p class="card-desc">Ephemeral sandboxes share a persistent workspace across lifetimes. Sandbox A writes, gets destroyed — Sandbox B mounts and picks up where it left off.</p>
+                    <code><span class="rc-comment"># Quick start</span><br><span class="rc-cmd">npm install</span><br><span class="rc-cmd">npm run build</span><br><span class="rc-cmd">npm run demo</span><br><br><span class="rc-comment"># Sandbox A clones &amp; writes to drive9</span><br><span class="rc-comment"># Sandbox A is destroyed</span><br><span class="rc-comment"># Sandbox B mounts &amp; reads from drive9</span><br><span class="rc-ok">✓ handoff complete</span></code>
+                    <a class="card-link" href="https://github.com/drive9-ai/drive9-for-e2b" target="_blank" rel="noreferrer">View on GitHub</a>
                 </div>
-                <div class="runtime-card">
-                    <p class="runtime-card-title">Firecracker MicroVMs</p>
-                    <p class="runtime-card-desc">One command to mount drive9 inside a Firecracker microVM. Lightweight isolation with full FUSE filesystem access — no sidecar, no agent.</p>
-                    <code><span class="rc-comment"># Start a microVM with drive9 mounted</span><br><span class="rc-cmd">make demo</span><br><span class="rc-ok">✓ VM booted — drive9 mounted at /mnt/drive9</span><br><br><span class="rc-comment"># Use it like any filesystem</span><br><span class="rc-cmd">ls /mnt/drive9/projects/</span><br><span class="rc-ok">agent-workspace/  shared-skills/</span></code>
-                    <a class="runtime-card-link" href="https://github.com/drive9-ai/drive9-for-firecracker" target="_blank" rel="noreferrer">View on GitHub</a>
+                <div class="card">
+                    <p class="card-title">Firecracker MicroVMs</p>
+                    <p class="card-desc">One command to mount drive9 inside a Firecracker microVM. Lightweight isolation with full FUSE filesystem access — no sidecar, no agent.</p>
+                    <code><span class="rc-comment"># Provide your drive9 API key</span><br><span class="rc-cmd">export DRIVE9_API_KEY="dat9_..."</span><br><br><span class="rc-comment"># One-command start</span><br><span class="rc-cmd">make demo</span><br><span class="rc-comment"># Boots VM, mounts drive9, drops</span><br><span class="rc-comment"># you into an interactive shell</span></code>
+                    <a class="card-link" href="https://github.com/drive9-ai/drive9-for-firecracker" target="_blank" rel="noreferrer">View on GitHub</a>
                 </div>
             </div>
         </section>
 
         <section class="human" aria-label="For you">
-            <p class="human-label fade-in">For you</p>
-            <div class="human-grid fade-in">
-                <div class="human-card">
-                    <p class="human-card-title">Security</p>
-                    <p class="human-card-desc">Encrypted in transit. Tenant-isolated. Access-controlled.</p>
-                    <a class="human-card-link" href="/security.html">Learn more</a>
+            <p class="section-label fade-in">For you</p>
+            <div class="section-grid fade-in">
+                <div class="card">
+                    <p class="card-title">Security</p>
+                    <p class="card-desc">Encrypted in transit. Tenant-isolated. Access-controlled.</p>
+                    <a class="card-link" href="/security.html">Learn more</a>
                 </div>
-                <div class="human-card">
-                    <p class="human-card-title">Install</p>
-                    <p class="human-card-desc">One command to get started.</p>
+                <div class="card">
+                    <p class="card-title">Install</p>
+                    <p class="card-desc">One command to get started.</p>
                     <code>curl -fsSL https://drive9.ai/install.sh | sh</code>
-                    <a class="human-card-link" href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
+                    <a class="card-link" href="https://github.com/mem9-ai/drive9/blob/main/README.md" target="_blank" rel="noreferrer">Documentation</a>
                 </div>
             </div>
         </section>
