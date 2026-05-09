@@ -469,10 +469,38 @@ h1 {
 
 .runtime { padding-top: 80px; padding-bottom: 16px; }
 
+.runtime .card {
+    position: relative;
+    overflow: hidden;
+}
+.runtime .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(141,216,141,0.3) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.runtime .card:hover::before { opacity: 1; }
+
+.runtime .card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 16px;
+}
+
 .runtime .card code {
     display: block;
     padding: 14px 16px;
     border: 1px solid var(--line);
+    border-left: 2px solid #2a2a2a;
     border-radius: 8px;
     background: var(--bg);
     font-family: 'JetBrains Mono', monospace;
@@ -481,6 +509,9 @@ h1 {
     color: var(--muted);
     margin-bottom: 14px;
     overflow-x: auto;
+}
+.runtime .card:hover code {
+    border-left-color: rgba(141,216,141,0.3);
 }
 .runtime .card code .rc-comment { color: var(--faint); }
 .runtime .card code .rc-cmd { color: var(--ink); font-weight: 500; }
@@ -613,15 +644,17 @@ footer {
             <p class="section-label">Any sandbox, one filesystem</p>
             <div class="section-grid">
                 <div class="card">
+                    <div class="card-icon">☁️</div>
                     <p class="card-title">E2B Cloud Sandboxes</p>
-                    <p class="card-desc">Ephemeral sandboxes share a persistent workspace across lifetimes. Sandbox A writes, gets destroyed — Sandbox B mounts and picks up where it left off.</p>
-                    <code><span class="rc-comment"># Quick start</span><br><span class="rc-cmd">npm install</span><br><span class="rc-cmd">npm run build</span><br><span class="rc-cmd">npm run demo</span><br><br><span class="rc-comment"># Sandbox A clones &amp; writes to drive9</span><br><span class="rc-comment"># Sandbox A is destroyed</span><br><span class="rc-comment"># Sandbox B mounts &amp; reads from drive9</span><br><span class="rc-ok">✓ handoff complete</span></code>
+                    <p class="card-desc">Sandboxes come and go. Files stay. One sandbox writes, another picks up where it left off.</p>
+                    <code><span class="rc-cmd">npm install &amp;&amp; npm run demo</span><br><br><span class="rc-comment"># Sandbox A writes to drive9</span><br><span class="rc-comment"># Sandbox A is destroyed</span><br><span class="rc-comment"># Sandbox B mounts drive9</span><br><span class="rc-ok">✓ handoff complete</span></code>
                     <a class="card-link" href="https://github.com/drive9-ai/drive9-for-e2b" target="_blank" rel="noreferrer">View on GitHub</a>
                 </div>
                 <div class="card">
+                    <div class="card-icon">🔥</div>
                     <p class="card-title">Firecracker MicroVMs</p>
-                    <p class="card-desc">One command to mount drive9 inside a Firecracker microVM. Lightweight isolation with full FUSE filesystem access — no sidecar, no agent.</p>
-                    <code><span class="rc-comment"># Provide your drive9 API key</span><br><span class="rc-cmd">export DRIVE9_API_KEY="dat9_..."</span><br><br><span class="rc-comment"># One-command start</span><br><span class="rc-cmd">make demo</span><br><span class="rc-comment"># Boots VM, mounts drive9, drops</span><br><span class="rc-comment"># you into an interactive shell</span><br><br><span class="rc-ok">✓ drive9 mounted at /mnt/drive9</span></code>
+                    <p class="card-desc">Full FUSE mount inside a microVM. No sidecar, no agent — one command.</p>
+                    <code><span class="rc-cmd">export DRIVE9_API_KEY="dat9_..."</span><br><span class="rc-cmd">make demo</span><br><br><span class="rc-comment"># Boots VM, mounts drive9</span><br><span class="rc-comment"># Drops you into a shell</span><br><span class="rc-ok">✓ drive9 mounted at /mnt/drive9</span></code>
                     <a class="card-link" href="https://github.com/drive9-ai/drive9-for-firecracker" target="_blank" rel="noreferrer">View on GitHub</a>
                 </div>
             </div>
