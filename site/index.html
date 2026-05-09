@@ -400,6 +400,87 @@ h1 {
 .demo-replay.v { opacity: 1; }
 .demo-replay:hover { border-color: var(--muted); color: var(--muted); }
 
+/* ---- Runtime showcase ---- */
+
+.runtime { padding-top: 80px; padding-bottom: 16px; }
+
+.runtime-label {
+    padding-bottom: 24px;
+    color: var(--faint);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.runtime-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.runtime-card {
+    padding: 28px 28px 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.runtime-card:hover {
+    border-color: #2a2520;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.runtime-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.runtime-card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.runtime-card code {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 14px;
+    overflow-x: auto;
+}
+.runtime-card code .rc-comment { color: var(--faint); }
+.runtime-card code .rc-cmd { color: var(--ink); font-weight: 500; }
+.runtime-card code .rc-ok { color: #8dd88d; }
+
+.runtime-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+.runtime-card-link:hover { color: var(--ink); opacity: 1; }
+.runtime-card-link::after {
+    content: '\2192';
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.runtime-card-link:hover::after { transform: translateX(3px); }
+
 /* ---- Human-facing resources ---- */
 
 .human { padding-top: 80px; }
@@ -543,6 +624,8 @@ footer {
     .instruction { padding: 24px; }
     .instruction::after { display: none; }
     .demo-container { height: 420px; }
+    .runtime-grid { grid-template-columns: 1fr; }
+    .runtime { padding-top: 48px; }
     .human-grid { grid-template-columns: 1fr; }
     .human { padding-top: 48px; }
 }
@@ -579,6 +662,24 @@ footer {
                     <div class="demo-tw" id="dtw"><div class="demo-term"><div class="demo-term-bar"><span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-term-title" id="dtt"></span></div><div class="demo-term-body" id="dtb"></div></div></div>
                 </div>
                 <button class="demo-replay" id="drp">Replay</button>
+            </div>
+        </section>
+
+        <section class="runtime fade-in" aria-label="Any sandbox, one filesystem">
+            <p class="runtime-label">Any sandbox, one filesystem</p>
+            <div class="runtime-grid">
+                <div class="runtime-card">
+                    <p class="runtime-card-title">E2B Cloud Sandboxes</p>
+                    <p class="runtime-card-desc">Ephemeral sandboxes share a persistent workspace across lifetimes. Sandbox A writes, gets destroyed — Sandbox B mounts and picks up where it left off.</p>
+                    <code><span class="rc-comment"># Sandbox A — clone &amp; analyze</span><br><span class="rc-cmd">git clone repo /workspace/project</span><br><span class="rc-cmd">llm analyze &gt; /workspace/summary.md</span><br><span class="rc-ok">✓ stored on drive9</span><br><br><span class="rc-comment"># Sandbox B — picks up the work</span><br><span class="rc-cmd">cat /workspace/summary.md</span><br><span class="rc-ok">✓ found — answering questions</span></code>
+                    <a class="runtime-card-link" href="https://github.com/drive9-ai/drive9-for-e2b" target="_blank" rel="noreferrer">View on GitHub</a>
+                </div>
+                <div class="runtime-card">
+                    <p class="runtime-card-title">Firecracker MicroVMs</p>
+                    <p class="runtime-card-desc">One command to mount drive9 inside a Firecracker microVM. Lightweight isolation with full FUSE filesystem access — no sidecar, no agent.</p>
+                    <code><span class="rc-comment"># Start a microVM with drive9 mounted</span><br><span class="rc-cmd">make demo</span><br><span class="rc-ok">✓ VM booted — drive9 mounted at /mnt/drive9</span><br><br><span class="rc-comment"># Use it like any filesystem</span><br><span class="rc-cmd">ls /mnt/drive9/projects/</span><br><span class="rc-ok">agent-workspace/  shared-skills/</span></code>
+                    <a class="runtime-card-link" href="https://github.com/drive9-ai/drive9-for-firecracker" target="_blank" rel="noreferrer">View on GitHub</a>
+                </div>
             </div>
         </section>
 
