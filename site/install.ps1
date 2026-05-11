@@ -173,7 +173,7 @@ function Resolve-InstallDir() {
 
         $script:InstallDir = $DefaultInstallDir
         Write-WarnMessage "drive9 currently resolves to $($existing.Source)"
-        Write-WarnMessage "Installing to $InstallDir; re-run with `$env:DRIVE9_INSTALL_DIR = `"$existingDir`"" to replace the active binary"
+        Write-WarnMessage ('Installing to ' + $InstallDir + '; re-run with $env:DRIVE9_INSTALL_DIR = "' + $existingDir + '" to replace the active binary')
         return
     }
 
@@ -242,7 +242,7 @@ function Report-PathStatus() {
     if ($activePath -ine $installedPath) {
         Write-WarnMessage "PATH shadowing detected: drive9 resolves to $activePath"
         Write-WarnMessage "Installed binary: $installedPath"
-        Write-WarnMessage "Re-run with `$env:DRIVE9_INSTALL_DIR = `"$([System.IO.Path]::GetDirectoryName($activePath))`"" to replace the active binary"
+        Write-WarnMessage ('Re-run with $env:DRIVE9_INSTALL_DIR = "' + [System.IO.Path]::GetDirectoryName($activePath) + '" to replace the active binary')
     }
 }
 
@@ -355,7 +355,7 @@ Write-Host ""
 Write-Host "    2. Try filesystem commands"
 Write-Host "       drive9 fs ls :/" -ForegroundColor DarkGray
 Write-Host "       drive9 fs cp .\file.txt :/data/file.txt" -ForegroundColor DarkGray
-Write-Host "       drive9 fs grep \"search term\" /" -ForegroundColor DarkGray
+Write-Host '       drive9 fs grep "search term" /' -ForegroundColor DarkGray
 Write-Host "       drive9 fs find /data -name `"*.txt`"" -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "    3. Mount locally"
