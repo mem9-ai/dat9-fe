@@ -3,11 +3,6 @@
 
 $ErrorActionPreference = "Stop"
 
-$BaseUrl = "https://drive9.ai"
-$ApiUrl = "https://api.drive9.ai"
-$DefaultInstallDir = Join-Path $env:LOCALAPPDATA "drive9"
-$InstallDir = $null
-
 function Write-Info($Message) {
     Write-Host "  $Message" -ForegroundColor DarkGray
 }
@@ -24,6 +19,31 @@ function Fail($Message) {
     Write-Host "  error: $Message" -ForegroundColor Red
     exit 1
 }
+
+if ($PSVersionTable.PSVersion.Major -lt 6) {
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+    } catch {
+    }
+}
+
+$BaseUrl = "https://drive9.ai"
+$ApiUrl = "https://api.drive9.ai"
+$localAppData = [Environment]::GetFolderPath("LocalApplicationData")
+if ([string]::IsNullOrWhiteSpace($localAppData)) {
+    if ($env:LOCALAPPDATA) {
+        $localAppData = $env:LOCALAPPDATA
+    } elseif ($env:USERPROFILE) {
+        $localAppData = Join-Path $env:USERPROFILE "AppData\Local"
+    } elseif ($HOME) {
+        $localAppData = Join-Path $HOME "AppData\Local"
+    } else {
+        Fail "Could not determine the LocalApplicationData directory"
+    }
+}
+
+$DefaultInstallDir = Join-Path $localAppData "drive9"
+$InstallDir = $null
 
 function Get-Architecture() {
     try {
@@ -76,6 +96,50 @@ function Get-LatestVersion() {
     }
 }
 
+function Get-ReleaseChecksums() {
+    $checksumsUrl = "$BaseUrl/releases/checksums.txt"
+
+    try {
+        if ($PSVersionTable.PSVersion.Major -lt 6) {
+            $content = (Invoke-WebRequest -Uri $checksumsUrl -UseBasicParsing -ErrorAction Stop).Content
+        } else {
+            $content = (Invoke-WebRequest -Uri $checksumsUrl -ErrorAction Stop).Content
+        }
+    } catch {
+        Fail "Unable to download release checksums from $checksumsUrl"
+    }
+
+    $checksums = @{}
+    foreach ($line in (($content | Out-String) -split "`r?`n")) {
+        if ([string]::IsNullOrWhiteSpace($line)) {
+            continue
+        }
+
+        $parts = $line.Trim() -split '\s+', 2
+        if ($parts.Length -eq 2) {
+            $checksums[$parts[1]] = $parts[0].ToLowerInvariant()
+        }
+    }
+
+    return $checksums
+}
+
+function Assert-Checksum($Path, $ArtifactName, $Checksums) {
+    if (-not $Checksums.ContainsKey($ArtifactName)) {
+        Fail "Missing checksum for $ArtifactName in releases/checksums.txt"
+    }
+
+    try {
+        $actual = (Get-FileHash -Path $Path -Algorithm SHA256 -ErrorAction Stop).Hash.ToLowerInvariant()
+    } catch {
+        Fail "Unable to compute SHA256 for $ArtifactName"
+    }
+
+    if ($actual -ne $Checksums[$ArtifactName]) {
+        Fail "Checksum mismatch for $ArtifactName"
+    }
+}
+
 function Get-ActiveDrive9Command() {
     return Get-Command drive9 -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
 }
@@ -83,9 +147,12 @@ function Get-ActiveDrive9Command() {
 function Is-UserManagedDir($Path) {
     $normalized = [System.IO.Path]::GetFullPath($Path)
     $defaultDir = [System.IO.Path]::GetFullPath($DefaultInstallDir)
-    $userBin = [System.IO.Path]::GetFullPath((Join-Path $HOME "bin"))
+    $userBin = $null
+    if ($HOME) {
+        $userBin = [System.IO.Path]::GetFullPath((Join-Path $HOME "bin"))
+    }
 
-    return $normalized -ieq $defaultDir -or $normalized -ieq $userBin
+    return $normalized -ieq $defaultDir -or ($userBin -and $normalized -ieq $userBin)
 }
 
 function Resolve-InstallDir() {
@@ -106,7 +173,7 @@ function Resolve-InstallDir() {
 
         $script:InstallDir = $DefaultInstallDir
         Write-WarnMessage "drive9 currently resolves to $($existing.Source)"
-        Write-WarnMessage "Installing to $InstallDir; set DRIVE9_INSTALL_DIR=$existingDir to replace the active binary"
+        Write-WarnMessage "Installing to $InstallDir; re-run with `$env:DRIVE9_INSTALL_DIR = `"$existingDir`"" to replace the active binary"
         return
     }
 
@@ -175,7 +242,7 @@ function Report-PathStatus() {
     if ($activePath -ine $installedPath) {
         Write-WarnMessage "PATH shadowing detected: drive9 resolves to $activePath"
         Write-WarnMessage "Installed binary: $installedPath"
-        Write-WarnMessage "Re-run with DRIVE9_INSTALL_DIR=$([System.IO.Path]::GetDirectoryName($activePath)) to replace the active binary"
+        Write-WarnMessage "Re-run with `$env:DRIVE9_INSTALL_DIR = `"$([System.IO.Path]::GetDirectoryName($activePath))`"" to replace the active binary"
     }
 }
 
@@ -225,8 +292,10 @@ if (-not (Test-Path $InstallDir)) {
     New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 }
 
+$artifactName = "drive9-windows-$arch.exe"
 $tempFile = Join-Path $env:TEMP ("drive9-" + [System.Guid]::NewGuid().ToString("N") + ".exe")
-$downloadUrl = "$BaseUrl/releases/drive9-windows-$arch.exe"
+$downloadUrl = "$BaseUrl/releases/$artifactName"
+$checksums = Get-ReleaseChecksums
 
 if ($latestVersion) {
     Write-Info "Downloading drive9 v$latestVersion..."
@@ -237,6 +306,8 @@ if ($latestVersion) {
 if (-not (Invoke-Download $downloadUrl $tempFile)) {
     Fail "No pre-built binary available for windows/$arch. Expected release: $downloadUrl"
 }
+
+Assert-Checksum $tempFile $artifactName $checksums
 
 try {
     Move-Item -Force $tempFile $targetExe
@@ -280,9 +351,9 @@ Write-Host "       drive9 fs grep \"search term\" /" -ForegroundColor DarkGray
 Write-Host "       drive9 fs find :/data -name `"*.txt`"" -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "    3. Mount locally"
-Write-Host "       mkdir $HOME\drive9" -ForegroundColor DarkGray
-Write-Host "       drive9 mount :/data $HOME\drive9" -ForegroundColor DarkGray
-Write-Host "       drive9 umount $HOME\drive9" -ForegroundColor DarkGray
+Write-Host '       mkdir "$HOME\drive9"' -ForegroundColor DarkGray
+Write-Host '       drive9 mount :/data "$HOME\drive9"' -ForegroundColor DarkGray
+Write-Host '       drive9 umount "$HOME\drive9"' -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "  Help: drive9 --help  drive9 fs --help" -ForegroundColor DarkGray
 Write-Host ""
