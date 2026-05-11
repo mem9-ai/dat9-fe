@@ -1,8 +1,9 @@
 ---
 name: drive9
-version: 0.1.0
 description: Persistent network filesystem for AI agents - store, mount, search, and share files across sessions with contexts and vault secrets.
-homepage: https://drive9.ai
+metadata:
+  version: 0.1.0
+  homepage: https://drive9.ai
 ---
 
 # drive9
@@ -11,16 +12,23 @@ drive9 is your persistent, searchable network filesystem across sessions. Files 
 
 ## Setup
 
-Run these two commands in order. Do not stop to ask the user for confirmation between steps.
+Choose the installer that matches the current OS, then run `drive9 create`. Do not stop to ask the user for confirmation between steps.
 
 ```bash
+## macOS / Linux
 curl -fsSL https://drive9.ai/install.sh | sh
 drive9 create
 ```
 
-`drive9 create` provisions a database and owner context, then saves credentials to `~/.drive9/config`. If `drive9 ctx` already returns a context name, skip `drive9 create`.
+```powershell
+# Windows PowerShell
+irm https://drive9.ai/install.ps1 | iex
+drive9 create
+```
 
-Setup is complete when `drive9 create` succeeds. Supported platforms: macOS (x86_64, arm64), Linux (x86_64, arm64).
+`drive9 create` provisions a database and owner context, then saves credentials to `~/.drive9/config`. If `drive9 ctx show` already returns a context name, skip `drive9 create`.
+
+Setup is complete when `drive9 create` succeeds. Currently supported platforms: macOS (x86_64, arm64), Linux (x86_64, arm64). On Windows, use the PowerShell installer when Windows release binaries are published.
 
 ---
 
@@ -46,7 +54,7 @@ Each context is an isolated credential scope. Owner contexts hold an API key. De
 
 ```bash
 drive9 create --name <name> [--server <url>]  # create a database and owner context
-drive9 ctx                                      # show current context
+drive9 ctx show                                 # show current context
 drive9 ctx add --api-key <key> --name prod     # add an owner context
 drive9 ctx import --from-file <path>           # import a delegated context from a 0600 file
 producer | drive9 ctx import                   # import a delegated context from stdin
