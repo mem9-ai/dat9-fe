@@ -28,7 +28,7 @@ drive9 create
 
 `drive9 create` provisions a database and owner context, then saves credentials to `~/.drive9/config`. If `drive9 ctx show` already returns a context name, skip `drive9 create`.
 
-Setup is complete when `drive9 create` succeeds. Currently supported platforms: macOS (x86_64, arm64), Linux (x86_64, arm64). On Windows, use the PowerShell installer when Windows release binaries are published.
+Setup is complete when `drive9 create` succeeds. Currently supported platforms: macOS (x86_64, arm64), Linux (x86_64, arm64), and Windows (amd64, arm64 via the PowerShell installer).
 
 ---
 

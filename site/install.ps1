@@ -293,7 +293,11 @@ if (-not (Test-Path $InstallDir)) {
 }
 
 $artifactName = "drive9-windows-$arch.exe"
-$tempFile = Join-Path $env:TEMP ("drive9-" + [System.Guid]::NewGuid().ToString("N") + ".exe")
+$tempDir = $env:TEMP
+if ([string]::IsNullOrWhiteSpace($tempDir)) {
+    $tempDir = [System.IO.Path]::GetTempPath()
+}
+$tempFile = Join-Path $tempDir ("drive9-" + [System.Guid]::NewGuid().ToString("N") + ".exe")
 $downloadUrl = "$BaseUrl/releases/$artifactName"
 $checksums = Get-ReleaseChecksums
 
@@ -310,7 +314,11 @@ if (-not (Invoke-Download $downloadUrl $tempFile)) {
 Assert-Checksum $tempFile $artifactName $checksums
 
 try {
-    Move-Item -Force $tempFile $targetExe
+    try {
+        Move-Item -Force $tempFile $targetExe
+    } catch {
+        Fail "Could not install drive9.exe to $targetExe. Close any running drive9 processes and try again. If the target directory needs elevation, re-run in an elevated PowerShell session."
+    }
 } finally {
     if (Test-Path $tempFile) {
         Remove-Item -Force $tempFile -ErrorAction SilentlyContinue
@@ -348,7 +356,7 @@ Write-Host "    2. Try filesystem commands"
 Write-Host "       drive9 fs ls :/" -ForegroundColor DarkGray
 Write-Host "       drive9 fs cp .\file.txt :/data/file.txt" -ForegroundColor DarkGray
 Write-Host "       drive9 fs grep \"search term\" /" -ForegroundColor DarkGray
-Write-Host "       drive9 fs find :/data -name `"*.txt`"" -ForegroundColor DarkGray
+Write-Host "       drive9 fs find /data -name `"*.txt`"" -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "    3. Mount locally"
 Write-Host '       mkdir "$HOME\drive9"' -ForegroundColor DarkGray
