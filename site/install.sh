@@ -226,7 +226,7 @@ main() {
   printf "       ${DIM}\$${RESET} drive9 ctx ls                   ${DIM}# list all contexts${RESET}\n"
   printf "       ${DIM}\$${RESET} drive9 ctx use my-branch        ${DIM}# switch to the fork${RESET}\n"
   printf "\n"
-  printf "  Help: ${DIM}drive9 --help${RESET}  ${DIM}drive9 ctx --help${RESET}  ${DIM}drive9 doctor --help${RESET}\n"
+  printf "  Help: ${DIM}drive9 --help${RESET}  ${DIM}drive9 fs --help${RESET}  ${DIM}drive9 ctx --help${RESET}  ${DIM}drive9 doctor --help${RESET}\n"
   printf "\n"
   printf "  Docs: ${DIM}https://drive9.ai/skill.md${RESET}\n"
   printf "\n"
