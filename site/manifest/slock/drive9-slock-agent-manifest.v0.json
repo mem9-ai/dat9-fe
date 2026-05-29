@@ -1,0 +1,18 @@
+{
+  "schema": "slock-agent-manifest.v0",
+  "service": "drive9",
+  "docs_url": "https://drive9.ai/skill.md",
+  "execution": {
+    "mode": "local_cli",
+    "command": "drive9"
+  },
+  "credential_boundary": {
+    "storage": "per_agent_home",
+    "forbid_user_home": true
+  },
+  "context_check": {
+    "command": ["drive9", "whoami", "--json"],
+    "expect": ["server_id", "agent_sub"],
+    "on_mismatch": "fail_closed"
+  }
+}
