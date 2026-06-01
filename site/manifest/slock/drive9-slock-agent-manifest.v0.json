@@ -12,7 +12,7 @@
   },
   "context_check": {
     "command": ["drive9", "ctx", "show", "--json"],
-    "expect": ["server", "tenant_id", "source"],
+    "expect": ["server", "api_key", "source"],
     "on_mismatch": "fail_closed"
   }
 }
