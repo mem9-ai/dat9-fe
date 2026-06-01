@@ -11,7 +11,7 @@
     "forbid_user_home": true
   },
   "context_check": {
-    "command": ["drive9", "whoami", "--json"],
+    "command": ["drive9", "ctx", "show", "--json"],
     "expect": ["server_id", "agent_sub"],
     "on_mismatch": "fail_closed"
   }
