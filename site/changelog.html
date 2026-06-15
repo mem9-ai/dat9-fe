@@ -5,8 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changelog — drive9</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="Drive9 v0.10.0 changelog: a persistent working directory for coding agents, with Git, SQLite, portable overlays, and durable files that survive sandbox restarts.">
+    <meta name="description" content="Drive9 v0.10.0: a persistent, mountable working directory for coding agents — Git-native workflows, LayerFS isolation, context forks, scoped tokens, and portable workspaces.">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Changelog-specific additions */
+        .release-section { margin-bottom: 48px; }
+        .release-section > h2 {
+            margin-bottom: 24px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+        }
+        .release-capability {
+            margin-bottom: 40px;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--paper);
+        }
+        .release-capability h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .release-capability p {
+            max-width: 720px;
+            margin-bottom: 16px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .release-capability p:last-child { margin-bottom: 0; }
+        .release-code {
+            overflow-x: auto;
+            margin: 16px 0;
+            padding: 18px 20px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--warm);
+            color: var(--ink);
+            font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            white-space: pre;
+        }
+        .release-code code { font-family: inherit; font-size: inherit; }
+        .release-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px;
+        }
+        .release-bullets li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 10px;
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+        .release-bullets li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--faint);
+        }
+        .release-bullets li strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+        .release-bullets li code,
+        .release-capability code {
+            padding: 2px 6px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--warm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--ink);
+        }
+        .release-code code {
+            padding: 0;
+            border: none;
+            background: none;
+            border-radius: 0;
+        }
+    </style>
 </head>
 <body>
     <main class="page secondary-page release-page">
@@ -19,99 +110,146 @@
             <h1>Drive9 v0.10.0</h1>
 
             <p class="secondary-intro release-intro">
-                Agents get a real working directory — with Git, SQLite, and file persistence that survives sandbox restarts.
+                The first public release. A persistent, mountable working directory where standard developer tools keep working &mdash; Git, SQLite, build tools, artifacts, and multi-step agent runs &mdash; across sandboxes, clouds, and machines.
             </p>
 
             <section class="release-hero-card" aria-label="Latest release summary">
                 <div>
                     <p class="release-date">June 15, 2026</p>
-                    <h2>First public release for coding-agent workspaces</h2>
+                    <h2>A workspace, not a sandbox volume</h2>
                     <p>
-                        Drive9 v0.10.0 gives agents a persistent, mountable workspace where code can be cloned, edited, tested, packed, layered, checkpointed, and recovered across sandbox lifecycles. Unlike object storage APIs or short-lived sandbox volumes, Drive9 is designed for real filesystem workloads — Git, SQLite, build tools, artifacts, and multi-step agent runs.
+                        An agent workspace should not be a disposable sandbox volume, and it should not force agents to use an object-storage API. Drive9 exposes a filesystem-shaped workspace with server-side state, local execution layers, scoped permissions, fast Git paths, and LayerFS isolation for parallel attempts.
                     </p>
                 </div>
                 <a class="release-action" href="https://github.com/mem9-ai/drive9/releases/tag/v0.10.0" target="_blank" rel="noreferrer">View on GitHub</a>
             </section>
 
-            <section>
-                <h2>What changed</h2>
-                <div class="release-grid">
-                    <div class="release-card">
-                        <h3>A real working directory</h3>
-                        <p>Agents can run ordinary developer tools against a Drive9 mount. Symlinks, hardlinks, file modes, write visibility, and durability controls make the workspace behave like a filesystem, not a blob API.</p>
-                    </div>
-                    <div class="release-card">
-                        <h3>Git works where the agent works</h3>
-                        <p>Agents can clone into a Drive9 mount, create fast worktrees, switch context, and resume after a sandbox restart without treating the repository as disposable scratch space.</p>
-                    </div>
-                    <div class="release-card">
-                        <h3>Cold reads wait less</h3>
-                        <p>Small files are fetched whole, repeated reads can hit local disk, and concurrent fetches are deduplicated. The cache is still revision-bound, so speedups do not come from serving stale workspace state.</p>
-                    </div>
-                    <div class="release-card">
-                        <h3>Workspace state can move</h3>
-                        <p>Workspaces can be packed, unpacked, layered, and moved across machines or sandboxes. Agents can experiment in copy-on-write layers and keep the base workspace clean until changes are ready.</p>
-                    </div>
-                    <div class="release-card">
-                        <h3>Production controls are built in</h3>
-                        <p>Scoped tokens, tenant metrics, Alibaba OSS/KMS/ACK support, and tiered e2e/performance gates make Drive9 easier to run as infrastructure, not just a local developer tool.</p>
-                    </div>
+            <!-- ===== CORE WORKSPACE CAPABILITIES ===== -->
+            <section class="release-section">
+                <h2>Core workspace capabilities</h2>
+
+                <!-- 1. Git workload -->
+                <div class="release-capability">
+                    <h3>1. Git workload: standard Git commands still work</h3>
+                    <p>
+                        Drive9 keeps the coding-agent workflow familiar. Agents use normal Git commands inside a mounted workspace &mdash; no special SDK required.
+                    </p>
+<pre class="release-code"><code>cd /mnt/workspace
+git clone https://github.com/org/repo .
+git checkout -b fix-auth
+git status
+git add . &amp;&amp; git commit -m "fix auth"</code></pre>
+                    <p>
+                        Source files, patches, config changes, and collaborative workspace output live in the server-side Drive9 workspace. High-churn local execution state &mdash; <code>.git</code> metadata, Git objects, hydrate cache, dependency directories, build output &mdash; stays in the local layer for performance.
+                    </p>
+                    <p>
+                        For large repositories, Drive9 adds a fast path that represents the clean tree as workspace metadata instead of pushing every file through FUSE writes:
+                    </p>
+<pre class="release-code"><code>drive9 git clone --fast --blobless --hydrate=sync https://github.com/org/repo /mnt/workspace/repo
+drive9 git worktree add --fast --blobless -b fix-auth /mnt/workspace/repo /mnt/workspace/repo-fix-auth HEAD</code></pre>
+                </div>
+
+                <!-- 2. LayerFS -->
+                <div class="release-capability">
+                    <h3>2. LayerFS: isolated filesystems for parallel agent attempts</h3>
+                    <p>
+                        LayerFS is the most important workspace primitive in this release. It lets agents create isolated writable layers from the same base workspace, run different attempts in parallel, inspect the diff, checkpoint progress, roll back failed attempts, and commit successful work back to base.
+                    </p>
+<pre class="release-code"><code># Create two isolated layers from the same base path.
+drive9 fs layer create --name fix-auth --tag task=auth /repo
+drive9 fs layer create --name fix-session --tag task=session /repo
+
+# Mount each layer into a separate sandbox or local path.
+drive9 mount --layer tag:task=auth :/repo /tmp/fix-auth
+drive9 mount --layer tag:task=session :/repo /tmp/fix-session</code></pre>
+                    <p>
+                        Each layer has its own write space. Agent A can test a <code>rateLimit(user)</code> fix while Agent B tries a cache-based session fix. The base workspace remains unchanged until a layer is committed.
+                    </p>
+<pre class="release-code"><code>drive9 fs layer diff tag:task=auth
+drive9 fs layer checkpoint --label before-final-test tag:task=auth
+drive9 fs layer rollback tag:task=session
+drive9 fs layer commit tag:task=auth</code></pre>
+                    <p>
+                        Commit is conflict-aware, not a blind overwrite. If the base changed under a layer, Drive9 reports a conflict and keeps the base safe. Failed or stale attempts do not silently replace newer work.
+                    </p>
+                </div>
+
+                <!-- 3. Context fork -->
+                <div class="release-capability">
+                    <h3>3. Context fork: isolate a whole workspace context</h3>
+                    <p>
+                        For larger experiments, Drive9 supports server-side copy-on-write context forks. A fork can read the parent state but isolates later writes into a new context.
+                    </p>
+<pre class="release-code"><code>drive9 ctx fork auth-experiment --from owner</code></pre>
+                    <p>
+                        It is heavier than a layer and is intended for full workspace branches: another agent, another direction, or a longer-running experiment that should not mutate the parent context. LayerFS is the lightweight tool for parallel attempts inside a workspace; <code>ctx fork</code> is the larger boundary for splitting an entire workspace context.
+                    </p>
+                </div>
+
+                <!-- 4. Scoped tokens -->
+                <div class="release-capability">
+                    <h3>4. Scoped tokens: least privilege inside the workspace</h3>
+                    <p>
+                        Long-running agents should not automatically receive full read/write access to the whole workspace. Workspace Zone scoped tokens limit an agent to the exact paths and operations it needs.
+                    </p>
+<pre class="release-code"><code># Issue a token that can only read/list /repo.
+drive9 token issue repo-reader --ttl 1h --allow /repo:read,list</code></pre>
+                    <p>
+                        With that token, the permission boundary is inside the workspace:
+                    </p>
+<pre class="release-code"><code>cat /mnt/workspace/repo/README.md        # allowed
+echo x > /mnt/workspace/repo/new.txt     # denied if token is read-only
+cat /mnt/workspace/secrets/token.txt     # denied if outside scope</code></pre>
+                    <p>
+                        Owners can issue and revoke scoped tokens from the CLI/API. Access is no longer just &ldquo;can this sandbox see the whole disk?&rdquo;
+                    </p>
+                </div>
+
+                <!-- 5. Pack/unpack -->
+                <div class="release-capability">
+                    <h3>5. Pack/unpack: warm restore for local execution state</h3>
+                    <p>
+                        Drive9 does not treat every local execution artifact as collaborative workspace state. The coding-agent profile keeps <code>.git</code>, dependency caches, build output, and tool caches in the local layer. <code>drive9 pack</code> and <code>drive9 unpack</code> make that local layer portable:
+                    </p>
+<pre class="release-code"><code>drive9 pack --local-root /tmp/drive9-local --remote-root /repo --profile coding-agent
+drive9 unpack --local-root /tmp/drive9-local --remote-root /repo --profile coding-agent</code></pre>
+                    <p>
+                        This is a warm-restore mechanism for sandbox replacement. The server-side workspace remains the source of truth for collaborative files; pack/unpack restores expensive local execution state that should not be lost between sandboxes.
+                    </p>
                 </div>
             </section>
 
-            <section>
-                <h2>Weekly highlights</h2>
-                <div class="release-timeline">
-                    <section class="release-week">
-                        <p class="release-week-date">Week of 2026-05-18</p>
-                        <h3>Durability controls and scoped workspace access</h3>
-                        <ul>
-                            <li>Choose the right write-safety tradeoff with <code>--durability=auto|interactive|fsync|close-sync|write-sync</code>.</li>
-                            <li>Workspace Zone scoped tokens restrict filesystem and upload access by default.</li>
-                            <li>Recursive <code>drive9 fs cp -r</code> and byte-range <code>drive9 fs cat</code> make the CLI useful for larger trees and partial reads.</li>
-                        </ul>
-                    </section>
-
-                    <section class="release-week">
-                        <p class="release-week-date">Week of 2026-05-25</p>
-                        <h3>POSIX compatibility and fast Git clone</h3>
-                        <ul>
-                            <li>Symlinks work across backend, CLI, SDK, and FUSE so common developer trees behave correctly.</li>
-                            <li>Local writes become visible safely and pending file create modes are preserved.</li>
-                            <li><code>drive9 git clone --fast</code> skips unnecessary FUSE checkout work for cleaner, faster repository setup.</li>
-                            <li>Kotlin and Swift SDKs expand Drive9 beyond Go/TypeScript clients.</li>
-                        </ul>
-                    </section>
-
-                    <section class="release-week">
-                        <p class="release-week-date">Week of 2026-06-01</p>
-                        <h3>Git worktrees, hardlinks, and read-cache architecture</h3>
-                        <ul>
-                            <li><code>drive9 git worktree add --fast</code> and <code>remove --fast</code> support branch-style agent workspaces.</li>
-                            <li>Hardlinks keep stable file identity and link counts for POSIX-heavy tools.</li>
-                            <li>Revision-bound disk cache, parallel block reads, and singleflight deduplication speed up repository reads.</li>
-                            <li>Live POSIX, Git, SQLite, concurrency, and performance gates catch regressions before release.</li>
-                        </ul>
-                    </section>
-
-                    <section class="release-week">
-                        <p class="release-week-date">Week of 2026-06-08</p>
-                        <h3>Portable workspaces, layered overlays, and crash recovery</h3>
-                        <ul>
-                            <li><code>drive9 mount</code> now backgrounds by default; use <code>--foreground</code> for blocking behavior.</li>
-                            <li>Layered copy-on-write overlays let agents experiment without mutating the base workspace.</li>
-                            <li><code>drive9 pack</code>, <code>drive9 unpack</code>, and the portable profile move workspace state across machines and sandboxes.</li>
-                            <li>FUSE crash-recovery hardening protects staged writes and keeps recovery behavior testable.</li>
-                            <li>Alibaba OSS, KMS, and ACK support make Drive9 deployable in more production environments.</li>
-                        </ul>
-                    </section>
-                </div>
+            <!-- ===== OTHER NOTABLE IMPROVEMENTS ===== -->
+            <section class="release-section">
+                <h2>Other notable improvements</h2>
+                <ul class="release-bullets">
+                    <li><strong>2&ndash;3&times; faster cold reads</strong> &mdash; Small files are fetched in a single request, repeated reads hit revision-bound local disk cache, and concurrent fetches are deduplicated without serving stale data.</li>
+                    <li><strong>Fuller POSIX behavior</strong> &mdash; Symlinks, hardlinks, recursive copy (<code>drive9 fs cp -r</code>), byte-range reads (<code>drive9 fs cat --offset --length</code>), chmod, preserved create modes, and stable file identity.</li>
+                    <li><strong>Durability controls</strong> &mdash; <code>drive9 mount --durability=auto|interactive|fsync|close-sync|write-sync</code> lets users choose the right latency/persistence tradeoff. FUSE crash-recovery hardening protects staged writes between <code>fsync</code> and async commit.</li>
+                    <li><strong>Portable profile</strong> &mdash; A built-in profile for moving local overlay state across machines and sandboxes.</li>
+                    <li><strong>Kotlin and Swift SDKs</strong> &mdash; Native mobile/JVM SDK coverage alongside existing Python and JavaScript SDKs.</li>
+                    <li><strong>Production hardening</strong> &mdash; Alibaba OSS/KMS/ACK support, tenant metrics, semantic-worker scheduling, tiered e2e/performance gates, and broader live POSIX/Git/SQLite coverage.</li>
+                </ul>
             </section>
 
+            <!-- ===== GETTING STARTED ===== -->
+            <section class="release-section">
+                <h2>Getting started</h2>
+<pre class="release-code"><code># Install
+curl -fsSL https://drive9.ai/install.sh | bash
+
+# Mount a workspace
+drive9 mount :/ ~/agent-work
+
+# Clone a repo into it using the fast Git path
+drive9 git clone --fast --blobless --hydrate=sync https://github.com/your/repo ~/agent-work/repo</code></pre>
+            </section>
+
+            <!-- ===== FULL NOTES ===== -->
             <section class="release-footnote">
-                <h2>Full notes</h2>
+                <h2>Full technical changelog</h2>
                 <p>
-                    The complete release notes live in the <a href="https://github.com/mem9-ai/drive9/blob/main/docs/release-notes/2026-05-18-to-2026-06-14.md" target="_blank" rel="noreferrer">Drive9 repository</a>. This website changelog highlights the user-facing changes; the repository notes include the full technical detail and PR-level history.
+                    The complete PR-level changelog covering all four weeks of development is available in the <a href="https://github.com/mem9-ai/drive9/blob/main/docs/release-notes/2026-05-18-to-2026-06-14.md" target="_blank" rel="noreferrer">Drive9 repository</a> and on the <a href="https://github.com/mem9-ai/drive9/releases/tag/v0.10.0" target="_blank" rel="noreferrer">GitHub Release page</a>.
                 </p>
             </section>
         </article>
