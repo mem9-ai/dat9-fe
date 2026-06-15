@@ -595,3 +595,34 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+
+.release-code {
+    overflow-x: auto;
+    margin: 14px 0 0;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.release-card code,
+.release-week code {
+    padding: 2px 6px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--warm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink);
+}
+
+.release-week p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
