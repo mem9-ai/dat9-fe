@@ -122,6 +122,8 @@ h1 {
 }
 
 .hero h1 {
+    /* line-height: 0.95 (above) clips g/p/y descenders under background-clip: text; pad the bottom so they show fully. */
+    padding-bottom: 0.12em;
     background: linear-gradient(135deg, #ede8e0 0%, #918c85 40%, #ede8e0 60%, #48443f 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
