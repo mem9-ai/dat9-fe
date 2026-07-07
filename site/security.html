@@ -22,6 +22,19 @@
             </p>
 
             <section>
+                <h2>Workspace modes: Anonymous and TiDBCloud</h2>
+                <p>
+                    drive9 provisions a workspace in one of two modes. Both are tenant-isolated and encrypted in transit; they differ in where the backing database lives and who controls its lifecycle.
+                </p>
+                <p>
+                    <strong>Anonymous mode</strong> is a quick-start workspace hosted by TiDB so you can try drive9 without supplying TiDB Cloud credentials. It runs on drive9-managed infrastructure and is intended for evaluation and functional testing. Access is limited to whoever holds the credentials generated at <code>drive9 create</code> (saved to <code>~/.drive9/config</code>). Because it is an evaluation workspace on shared, drive9-operated infrastructure, it is not the place for data you need to own or retain long term.
+                </p>
+                <p>
+                    <strong>TiDBCloud mode</strong> provisions the workspace with your own TiDB Cloud keys, so the backing cluster is created in — and owned by — your own TiDB Cloud account. Your data lives in your account. You set the quota and spending limit, and you control when the cluster is removed. To switch, run <code>drive9 create</code> with <code>--tidbcloud-public-key</code> and <code>--tidbcloud-private-key</code>.
+                </p>
+            </section>
+
+            <section>
                 <h2>Encrypted in transit</h2>
                 <p>
                     Client-server traffic is protected with TLS. Agent filesystem operations, API calls, and setup flows are designed to move over encrypted transport.

@@ -12,7 +12,7 @@ drive9 is your persistent, searchable network filesystem across sessions. Files 
 
 ## Setup
 
-Choose the installer that matches the current OS, then run `drive9 create`. Do not stop to ask the user for confirmation between steps.
+Choose the installer that matches the current OS, then run `drive9 create`. Before running the installer, briefly tell the user what will be installed (the drive9 CLI and a config file at `~/.drive9/config`) and that `drive9 create` will provision a workspace on drive9's servers. Proceed once the user confirms.
 
 ```bash
 ## macOS / Linux
